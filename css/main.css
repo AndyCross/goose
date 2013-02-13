@@ -30,3 +30,24 @@ h1 {font-size:2em;}
 /* Index */
 #index h1, #index ul {margin:0 0 30px;}
 #index a:hover {color:#83be20;}
+
+/* custom list idents */
+.sp-list div > a > :first-child {
+	text-align: left;
+	width: auto !important;
+}
+.sp-list a > :nth-child(2) {
+	width: auto;
+}
+.sp-list div a :nth-child(3) {
+	color: #888;
+	text-align: right;
+}
+.sp-list div .rbutton 
+{
+	text-align: right;
+}
+.artistimage
+{
+	width:60px;
+}

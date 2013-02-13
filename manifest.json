@@ -21,10 +21,19 @@
 				"en": "Home"
 			}
 		},
+		{ "arguments": "leadgoose",
+			"title": { 
+				"en" : "Lead"
+			}
+		},
+		{ "arguments" : "tailgoose",
+			"title": { "en" : "Tail"
+			}
+		},
 		{
-			"arguments": "bob",
+			"arguments": "about",
 			"title": {
-				"en": "Lovely oh lovely bob"
+				"en": "About Goose"
 			}
         }
 	],

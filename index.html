@@ -11,26 +11,54 @@
         <link rel="stylesheet" type="text/css" href="css/github.css">
 
         <script src="/js/jquery.min.js"></script>
+        <script src="/js/jTmpl.js"></script>
         <script src="/js/jargs.js"></script>
+        <script src="/js/flap.js"></script>
+
     </head>
     <body>
         <div id="wrapper">
             <div id="index" class="section">
-                <img src="/goose128x128.png" class="right" />
+                <img src="/goose300x300.png" class="right" />
                 <h2>Goose</h2>
 
                 <p>Geo-synchronise playing.</p>
+            </div>
 
-                    <h3>Search</h3>
+            <div id="leadgoose" class="section" style="display:none;">
+                    <h3>Lead Goose</h3>
+                    <p>Hey Goose; you're the lead goose - you choose the music that your flock listen to.</p>
                     <div class="html-snippet" data-container="html">
                         <input type="text" id="searchTerm" />
                         <button class="sp-button sp-primary" onclick="javascript:search()">Search</button>
                     </div>
+
+                    <script type="text/html" id="prepareToShare_tmpl">
+                      <div id="<%=uri%>">
+                        <div>
+                          <img class="artistimage" src="<%=image%>"/>
+                        </div>
+                        <div class="grid_6 omega contents">
+                          <p><b><%=name%></b></p>
+                          <p><%=uri%></p>
+                        </div>
+                      </div>
+                    </script>
+
+                    <div id="prepareToShare"></div>
                 <div id="playlistDiv"></div>
             </div>
 
-            <div id="bob" class="section" style="display:none;">
-                <h2>Another tab??</h2>
+            <div id="tailgoose" class="section" style="display:none;">
+                <h3>Tail Goose</h3>
+                <p>Hey Goose; you're the tail goose - you listen to music that the Lead Goose is playing</p>
+            </div>
+
+            <div id="about" class="section" style="display:none;">
+                <img src="/goose128x128.png" class="right" />
+                <h2>About Goose</h2>
+                <p>Goose is about sharing tracks with your friends (special ones we hope) in real time. Get them to plug in a share code, then play your music. They'll hear what you're hearing, when you're hearing it. </p>
+                <p>Developed by a Goose and her pet Lion.</p>
             </div>
         </div>
 
@@ -56,7 +84,7 @@
                         playlist.add(track);
                     });
         
-                    var list = new views.List(playlist);
+                    var list = getCommonList(playlist);
                     list.node.classList.add('sp-light');
 
                     $('#playlistDiv').empty();
@@ -67,29 +95,7 @@
 
             };
 
-            function search()
-            {
-                $('#playlistDiv').html("<div class='loading'><div class='throbber'><div></div></div></div>")
-
-                var search = new models.Search(document.getElementById('searchTerm').value);       
-                var playlist = new models.Playlist(); 
-                search.localResults = models.LOCALSEARCHRESULTS.APPEND;
-
-                search.observe(models.EVENT.CHANGE, function() {
-
-                    search.tracks.forEach(function(track) {
-                        playlist.add(track);
-                    });
-        
-                    var list = new views.List(playlist);
-                    list.node.classList.add('sp-light');
-
-                    $('#playlistDiv').empty();
-                    document.getElementById('playlistDiv').appendChild(list.node);
-                });
-
-                search.appendNext();                
-            }
+            
         </script>
     </body>
 </html>
