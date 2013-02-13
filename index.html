@@ -9,12 +9,87 @@
         <!-- Project CSS files -->
         <link rel="stylesheet" type="text/css" href="css/main.css">
         <link rel="stylesheet" type="text/css" href="css/github.css">
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/jargs.js"></script>
     </head>
     <body>
         <div id="wrapper">
             <div id="index" class="section">
-                <h1>Hello</h1>
+                <img src="/goose128x128.png" class="right" />
+                <h2>Goose</h2>
+
+                <p>Geo-synchronise playing.</p>
+
+                    <h3>Search</h3>
+                    <div class="html-snippet" data-container="html">
+                        <input type="text" id="searchTerm" />
+                        <button class="sp-button sp-primary" onclick="javascript:search()">Search</button>
+                    </div>
+                <div id="playlistDiv"></div>
+            </div>
+
+            <div id="bob" class="section" style="display:none;">
+                <h2>Another tab??</h2>
             </div>
         </div>
+
+        <script>
+            var sp = getSpotifyApi();
+            var models = sp.require('$api/models');
+            var views = sp.require('$api/views');
+
+            window.onload = function() {
+                
+                $('#playlistDiv').html("<div class='loading'><div class='throbber'><div></div></div></div>")
+
+                var sp = getSpotifyApi();
+                var models = sp.require('$api/models');
+
+                var search = new models.Search("Phil Collins");       
+                var playlist = new models.Playlist(); 
+                search.localResults = models.LOCALSEARCHRESULTS.APPEND;
+
+                search.observe(models.EVENT.CHANGE, function() {
+
+                    search.tracks.forEach(function(track) {
+                        playlist.add(track);
+                    });
+        
+                    var list = new views.List(playlist);
+                    list.node.classList.add('sp-light');
+
+                    $('#playlistDiv').empty();
+                    document.getElementById('playlistDiv').appendChild(list.node);
+                });
+
+                search.appendNext();
+
+            };
+
+            function search()
+            {
+                $('#playlistDiv').html("<div class='loading'><div class='throbber'><div></div></div></div>")
+
+                var search = new models.Search(document.getElementById('searchTerm').value);       
+                var playlist = new models.Playlist(); 
+                search.localResults = models.LOCALSEARCHRESULTS.APPEND;
+
+                search.observe(models.EVENT.CHANGE, function() {
+
+                    search.tracks.forEach(function(track) {
+                        playlist.add(track);
+                    });
+        
+                    var list = new views.List(playlist);
+                    list.node.classList.add('sp-light');
+
+                    $('#playlistDiv').empty();
+                    document.getElementById('playlistDiv').appendChild(list.node);
+                });
+
+                search.appendNext();                
+            }
+        </script>
     </body>
 </html>
