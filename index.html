@@ -23,6 +23,8 @@
                 <h2>Goose</h2>
 
                 <p>Geo-synchronise playing.</p>
+                <p>The idea on this tab is that we'll have a simple instruction on how the app works and maybe a tutorial video or something.
+                    The user would then choose whether they're going to be a DJ (lead) or listen in (tail). </p>
             </div>
 
             <div id="leadgoose" class="section" style="display:none;">
@@ -69,29 +71,8 @@
 
             window.onload = function() {
                 
-                $('#playlistDiv').html("<div class='loading'><div class='throbber'><div></div></div></div>")
-
                 var sp = getSpotifyApi();
                 var models = sp.require('$api/models');
-
-                var search = new models.Search("Phil Collins");       
-                var playlist = new models.Playlist(); 
-                search.localResults = models.LOCALSEARCHRESULTS.APPEND;
-
-                search.observe(models.EVENT.CHANGE, function() {
-
-                    search.tracks.forEach(function(track) {
-                        playlist.add(track);
-                    });
-        
-                    var list = getCommonList(playlist);
-                    list.node.classList.add('sp-light');
-
-                    $('#playlistDiv').empty();
-                    document.getElementById('playlistDiv').appendChild(list.node);
-                });
-
-                search.appendNext();
 
             };
 
