@@ -30,6 +30,12 @@ function stage(trackUri)
 	var t = models.Track.fromURI(trackUri, function(track) {
 			    $("#prepareToShare").html(tmpl("prepareToShare_tmpl", track));
 			});
+
+}
+
+function federate(trackUri)
+{
+    connection.send(trackUri);
 }
 
 function getCommonList(playlist)
@@ -40,7 +46,7 @@ function getCommonList(playlist)
                                     views.Track.FIELD.ARTIST |
                                     views.Track.FIELD.DURATION);
 
-                $(trackEx.node).append("<span class='rbutton'><button class='sp-button sp-flat' onclick='stage(\"" + track.uri + "\")'>honk</button></span>");
+                $(trackEx.node).append("<button class='add-playlist button icon' onclick='stage(\"" + track.uri + "\")'><span class='plus'></span>honk</button>");
                 return trackEx;
                                             });
 

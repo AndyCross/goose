@@ -44,7 +44,7 @@
                         </div>
                         <div class="grid_6 omega contents">
                           <p><b><%=name%></b></p>
-                          <p><%=uri%></p>
+                          <button class="" onclick="federate('<%=uri%>');">honk honk</button>
                         </div>
                       </div>
                     </script>
@@ -56,6 +56,19 @@
             <div id="tailgoose" class="section" style="display:none;">
                 <h3>Tail Goose</h3>
                 <p>Hey Goose; you're the tail goose - you listen to music that the Lead Goose is playing</p>
+
+                <script type="text/html" id="taildetails_tmpl">
+                  <div id="<%=uri%>">
+                    <div>
+                      <img src="<%=image%>"/>
+                    </div>
+                    <div class="grid_6 omega contents">
+                      <p><b><%=name%></b></p>
+                    </div>
+                  </div>
+                </script>
+
+                <div id="taildetails"></div>
             </div>
 
             <div id="about" class="section" style="display:none;">
@@ -70,18 +83,17 @@
             var sp = getSpotifyApi();
             var models = sp.require('$api/models');
             var views = sp.require('$api/views');
+            var connection = null;
 
             window.onload = function() {
                 
                 var sp = getSpotifyApi();
                 var models = sp.require('$api/models');
 
-
-
             };
 
             $(document).ready(function() {
-                var connection = $.connection('http://localhost:6599/goose', "group=123");
+                connection = $.connection('http://gooser.azurewebsites.net/goose', "group=123");
 
                 connection.start().done(function() {
 
@@ -89,9 +101,17 @@
                     connection.received(function(data) {
                         console.log(data);
                         $("#data").html(data);
-                    });
 
-                    connection.send("spotify:track:5OiaAaIMYlCZONyDBxqk4G");
+                        var p = models.player.play(data);
+
+                        $('#taildetails').empty();
+                        $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>")
+
+                        var t1 = models.Track.fromURI(data, function(track) {
+                                    var templated = tmpl("taildetails_tmpl", track);
+                                    $("#taildetails").html(templated);
+                                }); 
+                    });
                 }
                 );
 
