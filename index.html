@@ -11,6 +11,7 @@
         <link rel="stylesheet" type="text/css" href="css/github.css">
 
         <script src="/js/jquery.min.js"></script>
+        <script src="/js/jquery.signalR.min.js"></script>
         <script src="/js/jTmpl.js"></script>
         <script src="/js/jargs.js"></script>
         <script src="/js/flap.js"></script>
@@ -21,6 +22,7 @@
             <div id="index" class="section">
                 <img src="/goose300x300.png" class="right" />
                 <h2>Goose</h2>
+                <div id="data"></div>
 
                 <p>Geo-synchronise playing.</p>
                 <p>The idea on this tab is that we'll have a simple instruction on how the app works and maybe a tutorial video or something.
@@ -74,7 +76,26 @@
                 var sp = getSpotifyApi();
                 var models = sp.require('$api/models');
 
+
+
             };
+
+            $(document).ready(function() {
+                var connection = $.connection('http://localhost:6599/goose', "group=123");
+
+                connection.start().done(function() {
+
+                    $("#data").html("connected");
+                    connection.received(function(data) {
+                        console.log(data);
+                        $("#data").html(data);
+                    });
+
+                    connection.send("spotify:track:5OiaAaIMYlCZONyDBxqk4G");
+                }
+                );
+
+            });
 
             
         </script>
