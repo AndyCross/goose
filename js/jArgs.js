@@ -39,3 +39,26 @@ function handleSessionState() {
 		handleArgs();//not gone offline so show the active arg display
 	}
 }
+
+var player = models.player;
+player.observe(models.EVENT.CHANGE, handlePlayerChange);
+
+function handlePlayerChange()
+{
+	var state = "playing";
+	if (!player.playing) state = "paused";
+
+	var positionState = "from beginning";
+	if (player.position === null) 
+	{
+		state = "stopped";
+		positionState = "by completing";
+	}
+
+	if (player.position > 0)
+	{
+		positionState = "at custom postion (ms) " + player.position; 
+	}
+
+	console.log(state + " " + positionState);
+}

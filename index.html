@@ -22,7 +22,7 @@
             <div id="index" class="section">
                 <img src="/goose300x300.png" class="right" />
                 <h2>Goose</h2>
-                <h3>V0.0.6</h3>
+                <h3>V0.0.7</h3>
 
                 <div id="data"></div>
 
@@ -112,7 +112,7 @@
                         console.log(data);
                         $("#data").html(data);
 
-                        var p = models.player.play(data);
+                        var p = player.play(data);
 
                         $('#taildetails').empty();
                         $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>")
