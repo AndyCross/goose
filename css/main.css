@@ -34,7 +34,7 @@ h1 {font-size:2em;}
 /* custom list idents */
 .sp-list div > a > :first-child {
 	text-align: left;
-	width: auto !important;
+	f-width: auto !important;
 }
 .sp-list a > :nth-child(2) {
 	width: auto;

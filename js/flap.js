@@ -43,10 +43,11 @@ function getCommonList(playlist)
 	return new views.List(playlist, function(track) {
                 var trackEx = new views.Track(track,
                                     views.Track.FIELD.NAME |
+                                    views.Track.FIELD.STAR |
                                     views.Track.FIELD.ARTIST |
                                     views.Track.FIELD.DURATION);
 
-                $(trackEx.node).append("<button class='add-playlist button icon' onclick='stage(\"" + track.uri + "\")'><span class='plus'></span>honk</button>");
+                $(trackEx.node).append("<span class='sp-right'><button class='add-playlist button icon' onclick='stage(\"" + track.uri + "\")'><span class='plus'></span>honk</button></span>");
                 return trackEx;
                                             });
 
