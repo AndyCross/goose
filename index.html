@@ -22,7 +22,7 @@
             <div id="index" class="section">
                 <img src="/goose300x300.png" class="right" />
                 <h2>Goose</h2>
-                <h3>V0.0.8</h3>
+                <h3>V0.0.9</h3>
 
                 <div id="data"></div>
 
@@ -36,7 +36,7 @@
                     <p>Hey Goose; you're the lead goose - you choose the music that your flock listen to.</p>
                     <div class="html-snippet" data-container="html">
                         <input type="text" id="searchTerm" />
-                        <button class="sp-button sp-primary" onclick="javascript:search()">Search</button>
+                        <button class="sp-button sp-primary" id="doSearch" onclick="javascript:search()">Search</button>
                     </div>
 
                     <script type="text/html" id="prepareToShare_tmpl">
@@ -98,14 +98,16 @@
             };
 
             $(document).ready(function() {
+                $("#searchTerm").keyup(function(event){
+                    if(event.keyCode == 13){
+                        $("#doSearch").click();
+                        $("#searchTerm").blur();
+                    }
+                });
+
                 connection = $.connection('http://gooser.azurewebsites.net/goose', "group=123");
 
                 connection.start().done(function() {
-
-            try {
-                
-            } catch (err) 
-            { console.err(err); }
 
                     $("#data").html("connected");
                     connection.received(function(data) {
