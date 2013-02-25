@@ -22,3 +22,20 @@ function handleArgs() {
 		}
 	}
 }
+
+var session = models.session;
+session.observe(models.EVENT.STATECHANGED, handleSessionState);
+
+function handleSessionState() {
+	var state = session.state;
+	if (state === 2)
+	{
+		$(".section").hide();//hide all sections
+		$("#offline").show();//show the offline view
+		console.log("Gone offline")
+	}
+	else 
+	{
+		handleArgs();//not gone offline so show the active arg display
+	}
+}

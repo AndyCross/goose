@@ -22,7 +22,7 @@
             <div id="index" class="section">
                 <img src="/goose300x300.png" class="right" />
                 <h2>Goose</h2>
-                <h3>V0.0.5</h3>
+                <h3>V0.0.6</h3>
 
                 <div id="data"></div>
 
@@ -79,6 +79,10 @@
                 <p>Goose is about sharing tracks with your friends (special ones we hope) in real time. Get them to plug in a share code, then play your music. They'll hear what you're hearing, when you're hearing it. </p>
                 <p>Developed by a Goose and her pet Lion.</p>
             </div>
+
+            <div id="offline" class="section" style="display:none;">
+                <h2>You have gone offline</h2>
+            </div>
         </div>
 
         <script>
@@ -91,13 +95,17 @@
                 
                 var sp = getSpotifyApi();
                 var models = sp.require('$api/models');
-
             };
 
             $(document).ready(function() {
                 connection = $.connection('http://gooser.azurewebsites.net/goose', "group=123");
 
                 connection.start().done(function() {
+
+            try {
+                
+            } catch (err) 
+            { console.err(err); }
 
                     $("#data").html("connected");
                     connection.received(function(data) {
