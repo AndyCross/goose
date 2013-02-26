@@ -42,7 +42,7 @@
                     <script type="text/html" id="prepareToShare_tmpl">
                       <div id="<%=uri%>">
                         <div>
-                          <a id="artistLink"><img class="artistimage" src="<%=image%>"/></a>
+                          <a class="artistLink"><img class="artistimage" src="<%=image%>"/></a>
                         </div>
                         <div class="grid_6 omega contents">
                           <p><b><%=name%></b></p>
@@ -62,7 +62,7 @@
                 <script type="text/html" id="taildetails_tmpl">
                   <div id="<%=uri%>">
                     <div>
-                      <img src="<%=image%>"/>
+                      <a class="artistLink"><img src="<%=image%>"/></a>
                     </div>
                     <div class="grid_6 omega contents">
                       <p><b><%=name%></b></p>
@@ -122,7 +122,10 @@
                         var t1 = models.Track.fromURI(data, function(track) {
                                     var templated = tmpl("taildetails_tmpl", track);
                                     $("#taildetails").html(templated);
-                                }); 
+                                });                         
+
+                        var link = new models.Link(trackUri);
+                        $(".artistLink").attr("href", link.uri);
                     });
                 }
                 );

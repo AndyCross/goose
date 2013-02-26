@@ -32,7 +32,7 @@ function stage(trackUri)
 			});
 
     var link = new models.Link(trackUri);
-    $("#artistLink").attr("href", link.uri);
+    $(".artistLink").attr("href", link.uri);
 
 }
 
