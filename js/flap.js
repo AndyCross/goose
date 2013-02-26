@@ -31,6 +31,9 @@ function stage(trackUri)
 			    $("#prepareToShare").html(tmpl("prepareToShare_tmpl", track));
 			});
 
+    var link = new models.Link(trackUri);
+    $("#artistLink").attr("href", link.uri);
+
 }
 
 function federate(trackUri)
