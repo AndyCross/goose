@@ -50,7 +50,7 @@ function getCommonList(playlist)
                                     views.Track.FIELD.ARTIST |
                                     views.Track.FIELD.DURATION);
 
-                $(trackEx.node).append("<span class='sp-right'><button class='add-playlist button icon' onclick='stage(\"" + track.uri + "\")'><span class='plus'></span>honk</button></span>");
+                $(trackEx.node).append("<span class='sp-right'><button class='add-honk button icon' onclick='stage(\"" + track.uri + "\")'><span class='goose-dark'></span>honk</button></span>");
                 return trackEx;
                                             });
 
