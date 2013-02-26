@@ -36,6 +36,7 @@ function handleSessionState() {
 	}
 	else 
 	{
+		handleStartUp();//ensure our connection is still valid, especially if we have gone offline
 		handleArgs();//not gone offline so show the active arg display
 	}
 }

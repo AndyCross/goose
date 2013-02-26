@@ -1,3 +1,5 @@
+var timeout = null;
+
 function search()
 {
 	$('#prepareToShare').empty();
@@ -39,6 +41,13 @@ function stage(trackUri)
 function federate(trackUri)
 {
     connection.send(trackUri);
+
+    timeout = setTimeout(function() {
+        if (!player.playing) clearTimeout(timeout);
+
+        console.log("still playing at " + player.position)
+
+    }, 1000);
 }
 
 function getCommonList(playlist)
@@ -54,4 +63,34 @@ function getCommonList(playlist)
                 return trackEx;
                                             });
 
+}
+
+function handleDataReceived(data)
+{
+    console.log(data);
+    $("#data").html(data);
+
+    var p = player.play(data);
+
+    $('#taildetails').empty();
+    $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>")
+
+    var t1 = models.Track.fromURI(data, function(track) {
+                var templated = tmpl("taildetails_tmpl", track);
+                $("#taildetails").html(templated);
+            });                         
+
+    var link = new models.Link(trackUri);
+    $(".artistLink").attr("href", link.uri);
+}       
+
+function handleStartUp(){//todo ensure connection is valid before reinstantiation
+    connection = $.connection('http://gooser.azurewebsites.net/goose', "group=123");
+
+    connection.start().done(function() {
+
+        $("#data").html("connected");
+        connection.received(handleDataReceived);
+    }
+    );
 }
