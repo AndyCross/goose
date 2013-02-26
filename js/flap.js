@@ -42,12 +42,28 @@ function federate(trackUri)
 {
     connection.send(trackUri);
 
-    timeout = setTimeout(function() {
-        if (!player.playing) clearTimeout(timeout);
+    if (timeout !== null)
+    {
+        clearInterval(timeout);
+    }
 
-        console.log("still playing at " + player.position)
+    timeout = setInterval(function() {
+        if (!player.playing) 
+        {
+            clearInterval(timeout);
+        }
 
-    }, 1000);
+        var positionReport = player.position;
+        if (positionReport == null) {
+            console.log("loading");
+        }
+        else
+        {
+            console.log("still playing at " + player.position);
+        }
+
+
+    }, 5000);
 }
 
 function getCommonList(playlist)
