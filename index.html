@@ -16,13 +16,14 @@
         <script src="/js/jargs.js"></script>
         <script src="/js/flap.js"></script>
 
+        <script src="http://gooser.azurewebsites.net/gosling/hubs" type="text/javascript"></script>
     </head>
     <body>
         <div id="wrapper">
             <div id="index" class="section">
                 <img src="/goose300x300.png" class="right" />
                 <h2>Goose</h2>
-                <h3>V0.0.16</h3>
+                <h3>V0.0.19</h3>
 
                 <p>Geo-synchronise playing.</p>
                 <p>The idea on this tab is that we'll have a simple instruction on how the app works and maybe a tutorial video or something.
@@ -95,8 +96,7 @@
             var sp = getSpotifyApi();
             var models = sp.require('$api/models');
             var views = sp.require('$api/views');
-            var connection = null;
-            var syncConnection = null;
+            var gooseHub = null;
 
             window.onload = function() {
                 
@@ -112,45 +112,41 @@
                     }
                 });
 
-                connection = $.connection('http://gooser.azurewebsites.net/goose', "group=123");
+                $.connection.hub.qs = "group=123";
+                $.connection.hub.url = "http://gooser.azurewebsites.net/gosling";
 
-                connection.start().done(function() {
+                gooseHub = $.connection.gooseHub;
 
+                function connectionReady() {
                     $("#data").html("connected");
-                    connection.received(function(data) {
-                        console.log(data);
-                        $("#data").html(data);
+                };
 
-                        var p = player.play(data);
+                gooseHub.client.playTrack = function(data) {
+                    console.log(data);
+                    $("#data").html(data);
 
-                        $('#taildetails').empty();
-                        $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>")
+                    var p = player.play(data);
 
-                        var t1 = models.Track.fromURI(data, function(track) {
-                                    var templated = tmpl("taildetails_tmpl", track);
-                                    $("#taildetails").html(templated);
-                                });                         
+                    $('#taildetails').empty();
+                    $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>");
 
-                        var link = new models.Link(trackUri);
-                        $(".artistLink").attr("href", link.uri);
+                    var t1 = models.Track.fromURI(data, function(track) {
+                                var templated = tmpl("taildetails_tmpl", track);
+                                $("#taildetails").html(templated);
+                            });                         
 
-                        if (!stateSending) {
-                            //set up a receiving sync connection
-                            syncConnection = $.connection('http://gooser.azurewebsites.net/goosesync', "group=123");
+                    var link = new models.Link(trackUri);
+                    $(".artistLink").attr("href", link.uri);
+                };
 
-                            syncConnection.start().done(function() {
+                gooseHub.client.syncTrack = function(data) {
+                    console.log("lead goose is at position " + data);
+                    console.log("i am at position " + player.position);
+                };
 
-                                $("#data").html("receiving");
-                                syncConnection.received(function(data) {
-                                    console.log("lead goose is at position " + data);
-                                    console.log("this goose is at position " + player.position);
-                                });
-                            });
-
-                        }
-                    });
-                }
-                );
+                $.connection.hub.start({ jsonp: true })
+                                .done(connectionReady)
+                                .fail(function(){ $("#data").html("failed to connect"); });
 
             });
 

@@ -45,7 +45,8 @@
 	"RequiredInterface": 1,
 	"RequiredPermissions": [
 		"http://localhost",
-	    "http://*.azurewebsites.net"
+	    "http://*.azurewebsites.net",
+	    "http://gooser.azurewebsites.net"
 	],
 	"SupportedLanguages": [
 		"en"

@@ -41,36 +41,32 @@ function stage(trackUri)
 
 function federate(trackUri)
 {
-    syncConnection = $.connection('http://gooser.azurewebsites.net/gooseSync', "group=123");
+    setStateSending(true);
+    gooseHub.server.playTrack(trackUri);
 
-    syncConnection.start().done(function() {
-        setStateSending(true);
-        connection.send(trackUri);
+    if (timeout !== null)
+    {
+        clearInterval(timeout);
+    }
 
-        if (timeout !== null)
+    timeout = setInterval(function() {
+        if (!player.playing) 
         {
             clearInterval(timeout);
         }
 
-        timeout = setInterval(function() {
-            if (!player.playing) 
-            {
-                clearInterval(timeout);
-            }
-
-            var positionReport = player.position;
-            if (positionReport == null) {
-                console.log("loading");
-            }
-            else
-            {
-                console.log("sending lead goose position as " + player.position);
-                syncConnection.send(player.position);
-            }
+        var positionReport = player.position;
+        if (positionReport == null) {
+            console.log("loading");
+        }
+        else
+        {
+            console.log("sending lead goose position as " + player.position);
+            gooseHub.server.syncTrack(player.position);
+        }
 
 
-        }, 5000);
-    });
+    }, 5000);
 }
 
 function getCommonList(playlist)
@@ -106,17 +102,6 @@ function handleDataReceived(data)
     var link = new models.Link(trackUri);
     $(".artistLink").attr("href", link.uri);
 }       
-
-function handleStartUp(){//todo ensure connection is valid before reinstantiation
-    connection = $.connection('http://gooser.azurewebsites.net/goose', "group=123");
-
-    connection.start().done(function() {
-
-        $("#data").html("connected");
-        connection.received(handleDataReceived);
-    }
-    );
-}
 
 function setStateSending(value)
 {
