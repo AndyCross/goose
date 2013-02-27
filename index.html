@@ -90,6 +90,7 @@
             var models = sp.require('$api/models');
             var views = sp.require('$api/views');
             var connection = null;
+            var syncConnection = null;
 
             window.onload = function() {
                 
@@ -126,6 +127,21 @@
 
                         var link = new models.Link(trackUri);
                         $(".artistLink").attr("href", link.uri);
+
+                        if (!stateSending) {
+                            //set up a receiving sync connection
+                            syncConnection = $.connection('http://gooser.azurewebsites.net/goosesync', "group=123");
+
+                            syncConnection.start().done(function() {
+
+                                $("#data").html("receiving");
+                                syncConnection.received(function(data) {
+                                    console.log("lead goose is at position " + data);
+                                    console.log("this goose is at position " + player.position);
+                                });
+                            });
+
+                        }
                     });
                 }
                 );

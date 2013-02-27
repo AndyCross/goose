@@ -1,4 +1,5 @@
 var timeout = null;
+var stateSending = false;
 
 function search()
 {
@@ -40,30 +41,36 @@ function stage(trackUri)
 
 function federate(trackUri)
 {
-    connection.send(trackUri);
+    syncConnection = $.connection('http://gooser.azurewebsites.net/gooseSync', "group=123");
 
-    if (timeout !== null)
-    {
-        clearInterval(timeout);
-    }
+    syncConnection.start().done(function() {
+        stateSending = true;
+        connection.send(trackUri);
 
-    timeout = setInterval(function() {
-        if (!player.playing) 
+        if (timeout !== null)
         {
             clearInterval(timeout);
         }
 
-        var positionReport = player.position;
-        if (positionReport == null) {
-            console.log("loading");
-        }
-        else
-        {
-            console.log("still playing at " + player.position);
-        }
+        timeout = setInterval(function() {
+            if (!player.playing) 
+            {
+                clearInterval(timeout);
+            }
+
+            var positionReport = player.position;
+            if (positionReport == null) {
+                console.log("loading");
+            }
+            else
+            {
+                console.log("sending lead goose position as " + player.position);
+                syncConnection.send(player.position);
+            }
 
 
-    }, 5000);
+        }, 5000);
+    });
 }
 
 function getCommonList(playlist)
