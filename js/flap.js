@@ -44,7 +44,7 @@ function federate(trackUri)
     syncConnection = $.connection('http://gooser.azurewebsites.net/gooseSync', "group=123");
 
     syncConnection.start().done(function() {
-        stateSending = true;
+        setStateSending(true);
         connection.send(trackUri);
 
         if (timeout !== null)
@@ -116,4 +116,17 @@ function handleStartUp(){//todo ensure connection is valid before reinstantiatio
         connection.received(handleDataReceived);
     }
     );
+}
+
+function setStateSending(value)
+{
+    stateSending = value;
+
+    if (value) {
+        $("#sendingInfo").show();
+    }
+    else {
+        $("#sendingInfo").hide();
+    }
+
 }

@@ -22,13 +22,19 @@
             <div id="index" class="section">
                 <img src="/goose300x300.png" class="right" />
                 <h2>Goose</h2>
-                <h3>V0.0.15</h3>
+                <h3>V0.0.16</h3>
 
                 <p>Geo-synchronise playing.</p>
                 <p>The idea on this tab is that we'll have a simple instruction on how the app works and maybe a tutorial video or something.
                     The user would then choose whether they're going to be a DJ (lead) or listen in (tail). </p>
 
                 <div id="data"></div>
+                <div id="sendingInfo" style="display:none;">
+                    <h3>You are sending</h3>
+                    <p>This means you are in the state of syncing your tracks to your flock, having honk honked. If you have subsequently
+                        received from another Lead Goose, you won't sync with them. Note that this should not be possible in the beta release
+                        we will be careful with these states. Currently with only one group we can easily ninja each other and break this statefulness.</p>
+                </div>
             </div>
 
             <div id="leadgoose" class="section" style="display:none;">
