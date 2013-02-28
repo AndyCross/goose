@@ -42,7 +42,7 @@
                     <h3>Lead Goose</h3>
                     <p>Hey Goose; you're the lead goose - you choose the music that your flock listen to.</p>
                     <div class="html-snippet" data-container="html">
-                        <input type="text" id="searchTerm" />
+                        <input type="search" class="input" id="searchTerm" />
                         <button class="sp-button sp-primary" id="doSearch" onclick="javascript:search()">Search</button>
                     </div>
 
@@ -140,8 +140,10 @@
                 };
 
                 gooseHub.client.syncTrack = function(data) {
-                    console.log("lead goose is at position " + data);
-                    console.log("i am at position " + player.position);
+                    var leaderMS = data * 1;
+                    var myPositionMS = player.position * 1;
+
+                    console.log("This tail goose is " + (leaderMS - myPositionMS) + " behind the lead goose");
                 };
 
                 $.connection.hub.start({ jsonp: true })
