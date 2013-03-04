@@ -19,7 +19,7 @@ function search()
         
 		var list = getCommonList(playlist);
 
-        list.node.classList.add('sp-light');
+        //list.node.classList.add('sp-light');
 
         $('#playlistDiv').empty();
         document.getElementById('playlistDiv').appendChild(list.node);
@@ -95,9 +95,14 @@ function handleDataReceived(data)
     $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>")
 
     var t1 = models.Track.fromURI(data, function(track) {
+                
+                alert($("nowPlaying").html());
+
                 var templated = tmpl("taildetails_tmpl", track);
                 $("#taildetails").html(templated);
+
             });                         
+
 
     var link = new models.Link(trackUri);
     $(".artistLink").attr("href", link.uri);

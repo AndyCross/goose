@@ -1,7 +1,7 @@
 <!DOCTYPE html>
     <head>
         <!-- Spotify CSS files -->
-        <link rel="stylesheet" type="text/css" href="sp://resources/css/eve.css">
+        <link rel="stylesheet" type="text/css" href="sp://resources/css/adam.css">
         <link rel="stylesheet" type="text/css" href="sp://resources/css/api.css">
         <link rel="stylesheet" type="text/css" href="sp://resources/css/player.css">
         <link rel="stylesheet" type="text/css" href="sp://resources/css/list.css">
@@ -14,7 +14,7 @@
         <script src="/js/jquery.signalR.min.js"></script>
         <script src="/js/jTmpl.js"></script>
         <script src="/js/jargs.js"></script>
-        <script src="/js/flap.js"></script>
+        <script src="/js/flap-001.js"></script>
 
         <script src="http://gooser.azurewebsites.net/gosling/hubs" type="text/javascript"></script>
     </head>
@@ -23,7 +23,7 @@
             <div id="index" class="section">
                 <img src="/goose300x300.png" class="right" />
                 <h2>Goose</h2>
-                <h3>V0.0.19</h3>
+                <h3>V0.0.20</h3>
 
                 <p>Geo-synchronise playing.</p>
                 <p>The idea on this tab is that we'll have a simple instruction on how the app works and maybe a tutorial video or something.
@@ -78,6 +78,7 @@
                 </script>
 
                 <div id="taildetails"></div>
+                    <div id="nowPlaying"></div>
             </div>
 
             <div id="about" class="section" style="display:none;">
@@ -133,6 +134,14 @@
                     var t1 = models.Track.fromURI(data, function(track) {
                                 var templated = tmpl("taildetails_tmpl", track);
                                 $("#taildetails").html(templated);
+
+                                var song = '<a href="'+track.uri+'">'+track.name+'</a>';
+                                var album = '<a href="'+track.album.uri+'">'+track.album.name+'</a>';
+                                var artist = '<a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a>';
+                                var context = player.context, extra ="";
+                                if(context) { extra = ' from <a href="'+context+'">here</a>'; } // too lazy to fetch the actual context name
+                                
+                                $("#nowPlaying").html(song+" by "+artist+" off "+album+extra);
                             });                         
 
                     var link = new models.Link(trackUri);
