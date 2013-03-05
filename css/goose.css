@@ -65,3 +65,20 @@ span.goose-dark
 	border:4px dashed #333;
 	padding:10px;
 }
+
+#searchTerm
+{
+color: black;
+height: 35px;
+line-height: 12px;
+
+resize: none;
+padding-left: 28px;
+
+}
+
+#prepareToShare
+{
+	float:auto;
+
+}
