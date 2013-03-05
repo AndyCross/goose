@@ -9,6 +9,7 @@
         <!-- Project CSS files -->
         <link rel="stylesheet" type="text/css" href="css/main.css">
         <link rel="stylesheet" type="text/css" href="css/github.css">
+        <link rel="stylesheet" type="text/css" href="css/goose.css">
 
         <script src="/js/jquery.min.js"></script>
         <script src="/js/jquery.signalR.min.js"></script>
@@ -23,7 +24,7 @@
             <div id="index" class="section">
                 <img src="/goose300x300.png" class="right" />
                 <h2>Goose</h2>
-                <h3>V0.0.20</h3>
+                <h3>V0.0.22</h3>
 
                 <p>Geo-synchronise playing.</p>
                 <p>The idea on this tab is that we'll have a simple instruction on how the app works and maybe a tutorial video or something.
@@ -135,8 +136,6 @@
                                 showTail(track);
                             });                         
 
-                    var link = new models.Link(trackUri);
-                    $(".artistLink").attr("href", link.uri);
                 };
 
                 gooseHub.client.syncTrack = function(data) {

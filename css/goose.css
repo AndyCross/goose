@@ -1,0 +1,55 @@
+
+/* custom list idents */
+.sp-list div > a > :first-child {
+	text-align: left;
+}
+.sp-list a > :nth-child(2) {
+	width: auto;
+}
+.sp-list div a :nth-child(3) {
+	color: #888;
+	text-align: right;
+}
+.sp-list div .rbutton 
+{
+	text-align: right;
+}
+.artistimage
+{
+	width:60px;
+}
+.sp-list
+{
+	overflow: visible;
+}
+span.goose-blue
+{
+	background-image: url('/goose18x18-blue.png');
+	background-position: -3px -2px;
+	background-size: 15px 15px;
+}
+span.goose-dark
+{
+	background-image: url('/goose18x18-dark.png');
+	background-position: -3px -2px;
+	background-size: 15px 15px;
+}
+.add-honk
+{
+	color:#333 !important;
+}
+
+#nowPlaying
+{
+	font-size: 24px;
+	line-height: 32px;
+}
+#nowPlaying a
+{
+	color: #ccc;
+}
+#player-image, #player-image .image {
+	float: left;
+	height: 128px;
+	width: 128px;
+}

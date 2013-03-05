@@ -84,3 +84,8 @@ span.goose-dark
 {
 	color: #ccc;
 }
+#player-image, #player-image .image {
+	float: left;
+	height: 128px;
+	width: 128px;
+}

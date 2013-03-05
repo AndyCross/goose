@@ -9,7 +9,7 @@
 		"300x300": "goose300x300.png"
 	},
 	"AppName": {
-		"en": "Goosaroo"
+		"en": "Goose"
 	},
 	"BundleIdentifier": "goose",
 	"BundleType": "Application",

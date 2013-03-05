@@ -1,6 +1,5 @@
 var timeout = null;
 var stateSending = false;
-var playerView = new views.Player();
 
 function search()
 {
@@ -104,7 +103,6 @@ function handleDataReceived(data)
                 if(context) { extra = ' from <a href="'+context+'">here</a>'; } // too lazy to fetch the actual context name
                 
                 $("#nowPlaying").html(song+" by "+artist+" off "+album+extra);
-                $("#nowPlaying").html("pissoff");
                 alert($("nowPlaying").html());
 
                 var templated = tmpl("taildetails_tmpl", track);
@@ -151,14 +149,15 @@ function showTail(track)
 
         if (link.type === models.Link.TYPE.TRACK || link.type === models.Link.TYPE.LOCAL_TRACK ||
             (link.type === models.Link.TYPE.INTERNAL && tempPlaylist.length == 0)) {
-            cover.append($(document.createElement('a')).attr('href', track.data.album.uri));
             var img = new ui.SPImage(track.data.album.cover ? track.data.album.cover : "sp://import/img/placeholders/300-album.png");
+            cover.append($(document.createElement('a')).attr('href', track.data.album.uri));
             cover.children().append(img.node);
         } else {
             cover.append($(playerImage.node));
         }
-        
-        $("#taildetails").append(cover);
+
+        console.log(cover);
+        $("#taildetails").html(cover);
         
     
     var song = '<a href="'+track.uri+'">'+track.name+'</a>';
