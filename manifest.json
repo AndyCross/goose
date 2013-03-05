@@ -11,6 +11,13 @@
 	"AppName": {
 		"en": "Goose"
 	},
+	"AcceptedLinkTypes":[
+		"album",
+		"artist",
+		"track",
+		"playlist",
+		"user"
+	],
 	"BundleIdentifier": "goose",
 	"BundleType": "Application",
 	"BundleVersion": "0.1",

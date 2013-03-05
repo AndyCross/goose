@@ -5,6 +5,8 @@ var views = sp.require("sp://import/scripts/api/views");
 var ui = sp.require("sp://import/scripts/ui");
 var application = models.application;
 application.observe(models.EVENT.ARGUMENTSCHANGED, handleArgs);
+
+application.observe(models.EVENT.LINKSCHANGED, handleLinks);
 var playerView = new views.Player();
 
 function handleArgs() {
@@ -24,6 +26,16 @@ function handleArgs() {
 				break;
 		}
 	}
+}
+
+function handleLinks() {
+	var lastItem = models.application.links[models.application.links.length - 1];
+	console.log(lastItem);
+	
+	$(".section").hide();	// Hide all sections
+	$("#leadgoose").show(); //show the lead
+
+	drawPlaylistForUri(lastItem);
 }
 
 var session = models.session;

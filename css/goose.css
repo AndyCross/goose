@@ -68,12 +68,13 @@ span.goose-dark
 
 #searchTerm
 {
-color: black;
-height: 35px;
-line-height: 12px;
+	width:100%;
+	color: black;
+	height: 35px;
+	line-height: 12px;
 
-resize: none;
-padding-left: 28px;
+	resize: none;
+	padding-left: 28px;
 
 }
 

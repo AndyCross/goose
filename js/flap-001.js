@@ -193,8 +193,13 @@ function handleDrop(e) {
     var uri = e.dataTransfer.getData('Text');
 
     var linkDrop = new models.Link(uri);
-    var playListDrop = models.Playlist.fromURI(linkDrop.uri);
 
+    drawPlaylistForUri(linkDrop.uri);
+}
+
+function drawPlaylistForUri(uri)
+{
+    var playListDrop = models.Playlist.fromURI(uri);
     var list = getCommonList(playListDrop);
 
     //list.node.classList.add('sp-light');
