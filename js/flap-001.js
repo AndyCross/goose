@@ -190,9 +190,17 @@ function handleDragLeave(e) {
 
 function handleDrop(e) {
     this.style.background = '#333333';
+    $("#lead-drop-data").empty();
     var uri = e.dataTransfer.getData('Text');
 
     var linkDrop = new models.Link(uri);
+
+    if (linkDrop.type !== models.Link.TYPE.ALBUM && linkDrop.type !== models.Link.TYPE.PLAYLIST && linkDrop.type !== models.Link.TYPE.STARRED)
+    {
+        console.log(linkDrop.type);
+        $("#lead-drop-data").html("Nice try duck, you can't drop that kind of link here! Try an album or playlist.");
+        return;
+    }
 
     drawPlaylistForUri(linkDrop.uri);
 }
