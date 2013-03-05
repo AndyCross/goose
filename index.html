@@ -132,16 +132,7 @@
                     $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>");
 
                     var t1 = models.Track.fromURI(data, function(track) {
-                                var templated = tmpl("taildetails_tmpl", track);
-                                $("#taildetails").html(templated);
-
-                                var song = '<a href="'+track.uri+'">'+track.name+'</a>';
-                                var album = '<a href="'+track.album.uri+'">'+track.album.name+'</a>';
-                                var artist = '<a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a>';
-                                var context = player.context, extra ="";
-                                if(context) { extra = ' from <a href="'+context+'">here</a>'; } // too lazy to fetch the actual context name
-                                
-                                $("#nowPlaying").html(song+" by "+artist+" off "+album+extra);
+                                showTail(track);
                             });                         
 
                     var link = new models.Link(trackUri);

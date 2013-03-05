@@ -1,8 +1,11 @@
 // Handle URI arguments
 var sp = getSpotifyApi(1);
-var models = sp.require("sp://import/scripts/api/models")
+var models = sp.require("sp://import/scripts/api/models");
+var views = sp.require("sp://import/scripts/api/views");
+var ui = sp.require("sp://import/scripts/ui");
 var application = models.application;
 application.observe(models.EVENT.ARGUMENTSCHANGED, handleArgs);
+var playerView = new views.Player();
 
 function handleArgs() {
 	var args = models.application.arguments;
