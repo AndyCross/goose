@@ -173,3 +173,32 @@ function showTail(track)
         $("#starredness").html("<a href='#' class='sp-item sp-track sp-track-availability-0 sp-track-starred'><span class='sp-track-field-star'><span class='sp-icon-star sp-track-starred'></span></span></a>");
     }   
 }
+
+function handleDragEnter(e) {
+    this.style.background = '#444444';
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';  // See the section on the DataTransfer object.
+    return false;
+}
+
+function handleDragLeave(e) {
+    this.style.background = '#333333';
+}
+
+function handleDrop(e) {
+    this.style.background = '#333333';
+    var uri = e.dataTransfer.getData('Text');
+
+    var linkDrop = new models.Link(uri);
+    var playListDrop = models.Playlist.fromURI(linkDrop.uri);
+
+    var list = getCommonList(playListDrop);
+
+    //list.node.classList.add('sp-light');
+
+    $('#playlistDiv').empty();
+    document.getElementById('playlistDiv').appendChild(list.node);
+}

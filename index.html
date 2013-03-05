@@ -24,7 +24,7 @@
             <div id="index" class="section">
                 <img src="/goose300x300.png" class="right" />
                 <h2>Goose</h2>
-                <h3>V0.0.24</h3>
+                <h3>V0.0.25</h3>
 
                 <p>Geo-synchronise playing.</p>
                 <p>The idea on this tab is that we'll have a simple instruction on how the app works and maybe a tutorial video or something.
@@ -42,10 +42,11 @@
             <div id="leadgoose" class="section" style="display:none;">
                     <h3>Lead Goose</h3>
                     <p>Hey Goose; you're the lead goose - you choose the music that your flock listen to.</p>
-                    <div class="html-snippet" data-container="html">
+                    <div class="share">
                         <input type="search" id="searchTerm" />
                         <div id="prepareToShare"></div>
                     </div>
+                    <div id="lead-drop">Drop some music here</div>
 
                     <script type="text/html" id="prepareToShare_tmpl">
                       <div id="<%=uri%>">
@@ -150,6 +151,12 @@
                 $.connection.hub.start({ jsonp: true })
                                 .done(connectionReady)
                                 .fail(function(){ $("#data").html("failed to connect"); });
+
+                var drop = document.querySelector('#lead-drop');
+                drop.addEventListener('dragenter', handleDragEnter, false);
+                drop.addEventListener('dragover', handleDragOver, false);
+                drop.addEventListener('dragleave', handleDragLeave, false);
+                drop.addEventListener('drop', handleDrop, false);
 
             });
 
