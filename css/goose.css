@@ -43,6 +43,12 @@ span.goose-dark
 {
 	font-size: 24px;
 	line-height: 32px;
+
+	height: 128px;
+	display: -webkit-box;
+	-webkit-box-align: center;
+	-webkit-box-pack: center;
+	padding-left: 16px;
 }
 #nowPlaying a
 {
@@ -52,4 +58,10 @@ span.goose-dark
 	float: left;
 	height: 128px;
 	width: 128px;
+}
+
+#tailHolder
+{
+	border:4px dashed #333;
+	padding:10px;
 }
