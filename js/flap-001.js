@@ -133,7 +133,7 @@ function showTail(track)
     console.log(track);
     var link = new models.Link(track.uri);
 
-    $('#taildetails').empty();
+    $('#taildetails').empty(); $("#starredness").empty();
 
     if (link.type === models.Link.TYPE.ARTIST)
             playerView.context = models.Artist.fromURI(link.uri);
@@ -167,4 +167,9 @@ function showTail(track)
     if(context) { extra = ' from <a href="'+context+'">here</a>'; } // too lazy to fetch the actual context name
     
     $("#nowPlaying").html(song+" by "+artist+" off "+album+extra);
+
+    if (track.starred)
+    {
+        $("#starredness").html("<a href='#' class='sp-item sp-track sp-track-availability-0 sp-track-starred'><span class='sp-track-field-star'><span class='sp-icon-star sp-track-starred'></span></span></a>");
+    }   
 }
