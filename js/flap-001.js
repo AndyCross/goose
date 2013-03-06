@@ -199,10 +199,11 @@ function handleDrop(e) {
     {
         console.log(linkDrop.type);
         $("#lead-drop-data").html("Nice try duck, you can't drop that kind of link here! Try an album or playlist.");
-        return;
     }
-
-    drawPlaylistForUri(linkDrop.uri);
+    else {
+        drawPlaylistForUri(linkDrop.uri);
+    }
+    
     e.preventDefault();
 }
 
