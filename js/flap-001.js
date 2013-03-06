@@ -203,6 +203,7 @@ function handleDrop(e) {
     }
 
     drawPlaylistForUri(linkDrop.uri);
+    e.preventDefault();
 }
 
 function drawPlaylistForUri(uri)
