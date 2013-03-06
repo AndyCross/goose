@@ -162,7 +162,13 @@ function showTail(track)
     
     var song = '<a href="'+track.uri+'">'+track.name+'</a>';
     var album = '<a href="'+track.album.uri+'">'+track.album.name+'</a>';
-    var artist = '<a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a>';
+
+    var artist = track.album.artist.name;
+    if (track.album.artist.uri != null)
+    {
+        artist = '<a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a>';
+    }
+
     var context = player.context, extra ="";
     if(context) { extra = ' from <a href="'+context+'">here</a>'; } // too lazy to fetch the actual context name
     
@@ -203,7 +209,7 @@ function handleDrop(e) {
     else {
         drawPlaylistForUri(linkDrop.uri);
     }
-    
+
     e.preventDefault();
 }
 

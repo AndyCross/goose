@@ -24,13 +24,13 @@
 }
 span.goose-blue
 {
-	background-image: url('/goose18x18-blue.png');
+	background-image: url('/img/goose18x18-blue.png');
 	background-position: -3px -2px;
 	background-size: 15px 15px;
 }
 span.goose-dark
 {
-	background-image: url('/goose18x18-dark.png');
+	background-image: url('/img/goose18x18-dark.png');
 	background-position: -3px -2px;
 	background-size: 15px 15px;
 }

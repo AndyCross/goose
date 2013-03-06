@@ -3,10 +3,10 @@
 		"en": "Synchronising geographically distributed clients"
 	},
 	"AppIcon": {
-		"36x18": "goose18x36.png",
-		"64x64": "goose64x64.png",
-		"128x128": "goose128x128.png",
-		"300x300": "goose300x300.png"
+		"36x18": "img/goose18x36.png",
+		"64x64": "img/goose64x64.png",
+		"128x128": "img/goose128x128.png",
+		"300x300": "img/goose300x300.png"
 	},
 	"AppName": {
 		"en": "Goose"
