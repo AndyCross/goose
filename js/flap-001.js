@@ -1,5 +1,6 @@
 var timeout = null;
 var stateSending = false;
+var gooseHub = null;
 
 function search()
 {
@@ -223,3 +224,42 @@ function drawPlaylistForUri(uri)
     $('#playlistDiv').empty();
     document.getElementById('playlistDiv').appendChild(list.node);
 }
+
+function handleStartUp() {
+    $.connection.hub.qs = "group=123";
+    $.connection.hub.url = "http://gooser.azurewebsites.net/gosling";
+
+    gooseHub = $.connection.gooseHub;
+
+    function connectionReady() {
+        $("#data").html("connected");
+    };
+
+    gooseHub.client.playTrack = function(data) {
+        console.log(data);
+        $("#data").html(data);
+
+        var p = player.play(data);
+
+        $('#taildetails').empty();
+        $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>");
+
+        var t1 = models.Track.fromURI(data, function(track) {
+                    showTail(track);
+                });                         
+
+    };
+
+    gooseHub.client.syncTrack = function(data) {
+        var leaderMS = data * 1;
+        var myPositionMS = player.position * 1;
+
+        console.log("This tail goose is " + (leaderMS - myPositionMS) + " behind the lead goose");
+    };
+
+    $.connection.hub.start({ jsonp: true })
+                    .done(connectionReady)
+                    .fail(function(){ $("#data").html("failed to connect"); });
+
+}
+

@@ -13,11 +13,12 @@
 
         <script src="/js/jquery.min.js"></script>
         <script src="/js/jquery.signalR.min.js"></script>
+        <script src="http://gooser.azurewebsites.net/gosling/hubs" type="text/javascript"></script>
+        
         <script src="/js/jTmpl.js"></script>
         <script src="/js/jargs.js"></script>
         <script src="/js/flap-001.js"></script>
 
-        <script src="http://gooser.azurewebsites.net/gosling/hubs" type="text/javascript"></script>
     </head>
     <body>
         <div id="wrapper">
@@ -103,13 +104,6 @@
             var sp = getSpotifyApi();
             var models = sp.require('$api/models');
             var views = sp.require('$api/views');
-            var gooseHub = null;
-
-            window.onload = function() {
-                
-                var sp = getSpotifyApi();
-                var models = sp.require('$api/models');
-            };
 
             $(document).ready(function() {
                 $("#searchTerm").keyup(function(event){
@@ -119,46 +113,13 @@
                     }
                 });
 
-                $.connection.hub.qs = "group=123";
-                $.connection.hub.url = "http://gooser.azurewebsites.net/gosling";
-
-                gooseHub = $.connection.gooseHub;
-
-                function connectionReady() {
-                    $("#data").html("connected");
-                };
-
-                gooseHub.client.playTrack = function(data) {
-                    console.log(data);
-                    $("#data").html(data);
-
-                    var p = player.play(data);
-
-                    $('#taildetails').empty();
-                    $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>");
-
-                    var t1 = models.Track.fromURI(data, function(track) {
-                                showTail(track);
-                            });                         
-
-                };
-
-                gooseHub.client.syncTrack = function(data) {
-                    var leaderMS = data * 1;
-                    var myPositionMS = player.position * 1;
-
-                    console.log("This tail goose is " + (leaderMS - myPositionMS) + " behind the lead goose");
-                };
-
-                $.connection.hub.start({ jsonp: true })
-                                .done(connectionReady)
-                                .fail(function(){ $("#data").html("failed to connect"); });
-
                 var drop = document.querySelector('#lead-drop');
                 drop.addEventListener('dragenter', handleDragEnter, false);
                 drop.addEventListener('dragover', handleDragOver, false);
                 drop.addEventListener('dragleave', handleDragLeave, false);
                 drop.addEventListener('drop', handleDrop, false);
+
+                handleStartUp();//initialise connection to the server etc
 
             });
 
