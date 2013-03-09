@@ -227,7 +227,7 @@ function drawPlaylistForUri(uri)
 }
 
 function handleStartUp() {
-    $.connection.hub.qs = "group=" + $("#groupIdentifier").value();
+    $.connection.hub.qs = "group=" + $("#groupIdentifier").val();
     $.connection.hub.url = "http://gooser.azurewebsites.net/gosling";
 
     gooseHub = $.connection.gooseHub;
@@ -263,4 +263,13 @@ function handleStartUp() {
                     .fail(function(){ $("#data").html("failed to connect"); });
 
 }
+
+function doSetFlock()
+{
+    $.connection.hub.stop();
+    handleStartUp();
+}
+
+
+
 

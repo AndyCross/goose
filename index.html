@@ -9,7 +9,7 @@
         <!-- Project CSS files -->
         <link rel="stylesheet" type="text/css" href="css/main.css">
         <link rel="stylesheet" type="text/css" href="css/github.css">
-        <link rel="stylesheet" type="text/css" href="css/goose.css">
+        <link rel="stylesheet" type="text/css" href="css/goose.css?rel=2">
 
         <script src="/js/jquery.min.js"></script>
         <script src="/js/jquery.signalR.min.js"></script>
@@ -17,7 +17,7 @@
         
         <script src="/js/jTmpl.js"></script>
         <script src="/js/jargs.js"></script>
-        <script src="/js/flap-001.js"></script>
+        <script src="/js/flap.js?rel=3"></script>
 
     </head>
     <body>
@@ -25,11 +25,18 @@
             <div id="index" class="section">
                 <img src="/img/goose300x300.png" class="right" />
                 <h2>Goose</h2>
-                <h3>V0.0.28</h3>
+                <h3>V0.0.29</h3>
 
                 <p>Geo-synchronise playing.</p>
                 <p>The idea on this tab is that we'll have a simple instruction on how the app works and maybe a tutorial video or something.
                     The user would then choose whether they're going to be a DJ (lead) or listen in (tail). </p>
+
+
+                <div id="groupMembership" class="paddedBox">
+                <p>For now, set the value of the below to determine the group you are leading or following. There are no limitations on what you can achieve in this group - i.e. you are not limited to only leading or following. We will build this functionality in before the beta release.</p>
+                    <input type="text" id="groupIdentifier" value="123"></input>
+                    <button onclick="javascript:doSetFlock()">Select flock</button>
+                </div>
 
                 <div id="data"></div>
                 <div id="sendingInfo" style="display:none;">
@@ -95,7 +102,7 @@
                 <p>Developed by a Goose and her pet Lion.</p>
             </div>
 
-            <div id="offline" class="offline" class="section" style="display:none;">
+            <div id="offline" class="offline" class="section" style="display:none !important;">
                 <h1>You have gone offline</h1>
             </div>
         </div>
