@@ -97,14 +97,14 @@ function handleDataReceived(data)
     $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>")
 
     var t1 = models.Track.fromURI(data, function(track) {
-                var song = '<a href="'+track.uri+'">'+track.name+'</a>';
+                var song = '<h2><a href="'+track.uri+'">'+track.name+'</a></h2>';
                 console.log(song);
                 var album = '<a href="'+track.album.uri+'">'+track.album.name+'</a>';
-                var artist = '<a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a>';
+                var artist = '<h1><a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a></h1>';
                 var context = player.context, extra ="";
                 if(context) { extra = ' from <a href="'+context+'">here</a>'; } // too lazy to fetch the actual context name
                 
-                $("#nowPlaying").html(song+" by "+artist+" off "+album+extra);
+                $("#nowPlaying").html(artist + song + album + extra);
                 alert($("nowPlaying").html());
 
                 var templated = tmpl("taildetails_tmpl", track);
@@ -162,19 +162,19 @@ function showTail(track)
         $("#taildetails").html(cover);
         
     
-    var song = '<a href="'+track.uri+'">'+track.name+'</a>';
-    var album = '<a href="'+track.album.uri+'">'+track.album.name+'</a>';
+    var song = '<h2><a href="'+track.uri+'">'+track.name+'</a></h2>';
+    var album = '<h2><a href="'+track.album.uri+'">'+track.album.name+'</a></h2>';
 
-    var artist = track.album.artist.name;
+    var artist = "<h1>" + track.album.artist.name + "</h1>";
     if (track.album.artist.uri != null)
     {
         artist = '<a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a>';
     }
 
     var context = player.context, extra ="";
-    if(context) { extra = ' from <a href="'+context+'">here</a>'; } // too lazy to fetch the actual context name
+    if(context) { extra = '<a href="'+context+'">here</a>'; } // too lazy to fetch the actual context name
     
-    $("#nowPlaying").html(song+" by "+artist+" off "+album+extra);
+    $("#nowPlaying").html("<div>" + artist + song + album + extra + "</div>");
 
     if (track.starred)
     {
