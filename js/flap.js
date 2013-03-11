@@ -165,7 +165,7 @@ function showTail(track)
     var song = '<h2><a href="'+track.uri+'">'+track.name+'</a></h2>';
     var album = '<h2><a href="'+track.album.uri+'">'+track.album.name+'</a></h2>';
 
-    var artist = "<h1>" + track.album.artist.name + "</h1>";
+    var artist = "<h2>" + track.album.artist.name + "</h2>";
     if (track.album.artist.uri != null)
     {
         artist = '<a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a>';
