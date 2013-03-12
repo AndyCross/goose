@@ -271,13 +271,13 @@ function doSetFlock()
 
 function addStar(trackUri)
 {
-    models.Library.starredPlaylist.add(trackUri);
+    models.library.starredPlaylist.add(trackUri);
     doTailStar(trackUri, true);
 }
 
 function removeStar(trackUri)
 {
-    models.Library.starredPlaylist.remove(trackUri);
+    models.library.starredPlaylist.remove(trackUri);
     doTailStar(trackUri, false);
 }
 
