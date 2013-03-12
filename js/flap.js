@@ -176,10 +176,8 @@ function showTail(track)
     
     $("#nowPlaying").html("<div>" + artist + song + album + extra + "</div>");
 
-    if (track.starred)
-    {
-        $("#starredness").html("<a href='#' class='sp-item sp-track sp-track-availability-0 sp-track-starred'><span class='sp-track-field-star'><span class='sp-icon-star sp-track-starred'></span></span></a>");
-    }   
+
+    doTailStar(track.uri, track.starred);
 }
 
 function handleDragEnter(e) {
@@ -270,6 +268,30 @@ function doSetFlock()
     handleStartUp();
 }
 
+
+function addStar(trackUri)
+{
+    models.Library.starredPlaylist.add(trackUri);
+    doTailStar(trackUri, true);
+}
+
+function removeStar(trackUri)
+{
+    models.Library.starredPlaylist.remove(trackUri);
+    doTailStar(trackUri, false);
+}
+
+function doTailStar(trackUri, isStarred)
+{
+    if (isStarred)
+    {
+        $("#starredness").html("<a href='javascript:removeStar(\"" + trackUri + "\")' class='sp-item sp-track sp-track-availability-0 sp-track-starred'><span class='sp-track-field-star'><span class='sp-icon-star sp-track-starred'></span></span></a>");
+    }   
+    else
+    {
+        $("#starredness").html("<a href='javascript:addStar(\"" + trackUri + "\")' class='sp-item sp-track sp-track-availability-0'><span class='sp-track-field-star'><span class='sp-icon-star'></span></span></a>");
+    }
+}
 
 
 
