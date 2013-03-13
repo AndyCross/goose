@@ -10,21 +10,29 @@ application.observe(models.EVENT.LINKSCHANGED, handleLinks);
 var playerView = new views.Player();
 
 function handleArgs() {
-	var args = models.application.arguments;
-	$(".section").hide();	// Hide all sections
-	$("#"+args[0]).show();	// Show current section
-	console.log(args);
+	var state = session.state;
+	if (state !== 2) //if not offline
+	{
+		var args = models.application.arguments;
+		$(".section").hide();	// Hide all sections
+		$("#"+args[0]).show();	// Show current section
+		console.log(args);
 
-	// If there are multiple arguments, handle them accordingly
-	if(args[1]) {		
-		switch(args[0]) {
-			case "search":
-				searchInput(args);
-				break;
-			case "social":
-				socialInput(args[1]);
-				break;
+		// If there are multiple arguments, handle them accordingly
+		if(args[1]) {		
+			switch(args[0]) {
+				case "search":
+					searchInput(args);
+					break;
+				case "social":
+					socialInput(args[1]);
+					break;
+			}
 		}
+	}
+	else 
+	{
+		console.log("skipping tab change due to being offline");
 	}
 }
 

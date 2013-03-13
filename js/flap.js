@@ -215,13 +215,15 @@ function handleDrop(e) {
 
 function drawPlaylistForUri(uri)
 {
-    var playListDrop = models.Playlist.fromURI(uri);
-    var list = getCommonList(playListDrop);
+    models.Playlist.fromURI(uri, function(playListDrop) {
 
-    //list.node.classList.add('sp-light');
+        var list = getCommonList(playListDrop);
 
-    $('#playlistDiv').empty();
-    document.getElementById('playlistDiv').appendChild(list.node);
+        console.log(list);
+        $('#playlistDiv').empty();
+        document.getElementById('playlistDiv').appendChild(list.node);
+
+    });
 }
 
 function handleStartUp() {
