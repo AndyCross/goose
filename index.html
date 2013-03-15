@@ -16,8 +16,8 @@
         <script src="http://gooser.azurewebsites.net/gosling/hubs" type="text/javascript"></script>
         
         <script src="/js/jTmpl.js"></script>
-        <script src="/js/jargs.js"></script>
-        <script src="/js/flap.js?rel=7"></script>
+        <script src="/js/jargs.js?rel=1.0"></script>
+        <script src="/js/flap.js?rel=1.0"></script>
 
     </head>
     <body>
@@ -107,9 +107,6 @@
         </div>
 
         <script>
-            var sp = getSpotifyApi();
-            var models = sp.require('$api/models');
-            var views = sp.require('$api/views');
 
             $(document).ready(function() {
                 $("#searchTerm").keyup(function(event){
@@ -125,7 +122,7 @@
                 drop.addEventListener('dragleave', handleDragLeave, false);
                 drop.addEventListener('drop', handleDrop, false);
 
-                handleStartUp();//initialise connection to the server etc
+                //upgrade handled in require handleStartUp();//initialise connection to the server etc
 
             });
 

@@ -1,6 +1,33 @@
 var timeout = null;
 var stateSending = false;
 var gooseHub = null;
+var session = null;
+var models = null;
+
+require([
+        '$api/models',
+        '$api/location#Location',
+        '$api/search#Search',
+        '$api/toplists#Toplist',
+        '$views/buttons',
+        '$views/list#List',
+        '$views/image#Image'
+        ], function(modelsGlob, Location, Search, Toplist, buttons, List, Image) {
+
+    models = modelsGlob;       
+    //command session to load 
+    models.session.load('online').done( function() {
+        session = models.session;
+
+        // When application has loaded, run pages function
+        models.application.load('arguments').done(handleArgs);
+
+        // When arguments change, run pages function
+        models.application.addEventListener('arguments', handleArgs);
+    });//session.load
+
+
+});//require
 
 function search()
 {
@@ -294,6 +321,5 @@ function doTailStar(trackUri, isStarred)
         $("#starredness").html("<a href='javascript:addStar(\"" + trackUri + "\")' class='sp-item sp-track sp-track-availability-0'><span class='sp-track-field-star'><span class='sp-icon-star'></span></span></a>");
     }
 }
-
 
 

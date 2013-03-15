@@ -1,5 +1,5 @@
 // Handle URI arguments
-var sp = getSpotifyApi(1);
+/*var sp = getSpotifyApi(1);
 var models = sp.require("sp://import/scripts/api/models");
 var views = sp.require("sp://import/scripts/api/views");
 var ui = sp.require("sp://import/scripts/ui");
@@ -8,6 +8,14 @@ application.observe(models.EVENT.ARGUMENTSCHANGED, handleArgs);
 
 application.observe(models.EVENT.LINKSCHANGED, handleLinks);
 var playerView = new views.Player();
+
+var session = models.session;
+session.observe(models.EVENT.STATECHANGED, handleSessionState);
+
+var player = models.player;
+player.observe(models.EVENT.CHANGE, handlePlayerChange);
+
+*/
 
 function handleArgs() {
 	var state = session.state;
@@ -46,8 +54,6 @@ function handleLinks() {
 	drawPlaylistForUri(lastItem);
 }
 
-var session = models.session;
-session.observe(models.EVENT.STATECHANGED, handleSessionState);
 
 function handleSessionState() {
 	var state = session.state;
@@ -63,9 +69,6 @@ function handleSessionState() {
 		handleArgs();//not gone offline so show the active arg display
 	}
 }
-
-var player = models.player;
-player.observe(models.EVENT.CHANGE, handlePlayerChange);
 
 function handlePlayerChange()
 {
