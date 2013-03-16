@@ -26,6 +26,8 @@ require([
         models.application.addEventListener('arguments', handleArgs);
     });//session.load
 
+    handleStartUp();
+
 
 });//require
 
@@ -224,17 +226,19 @@ function handleDragLeave(e) {
 function handleDrop(e) {
     this.style.background = '#333333';
     $("#lead-drop-data").empty();
-    var uri = e.dataTransfer.getData('Text');
+    var uri = e.dataTransfer.getData('Text').toSpotifyURI();
+    console.log(uri);
 
-    var linkDrop = new models.Link(uri);
+    var linkDrop = new models.fromURI(uri);
 
-    if (linkDrop.type !== models.Link.TYPE.ALBUM && linkDrop.type !== models.Link.TYPE.PLAYLIST && linkDrop.type !== models.Link.TYPE.STARRED)
+    if (linkDrop instanceof models.Playlist || linkDrop instanceof models.Album)
     {
-        console.log(linkDrop.type);
-        $("#lead-drop-data").html("Nice try duck, you can't drop that kind of link here! Try an album or playlist.");
-    }
-    else {
         drawPlaylistForUri(linkDrop.uri);
+    }
+    else
+    {
+        console.log(linkDrop);
+        $("#lead-drop-data").html("Nice try duck, you can't drop that kind of link here! Try an album or playlist.");
     }
 
     e.preventDefault();
