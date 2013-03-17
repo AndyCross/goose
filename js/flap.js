@@ -78,12 +78,11 @@ function search()
 
 function stage(trackUri)
 {
-	var t = models.Track.fromURI(trackUri, function(track) {
+	var t = models.Track.fromURI(trackUri).load('name').done(function(track) {
 			    $("#prepareToShare").html(tmpl("prepareToShare_tmpl", track));
 			});
 
-    var link = new models.Link(trackUri);
-    $(".artistLink").attr("href", link.uri);
+    $(".artistLink").attr("href", t.uri);
 
 }
 
