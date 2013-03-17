@@ -120,7 +120,7 @@ function federate(trackUri)
 function getCommonList(playlist)
 {
     var list = listView.forPlaylist(playlist, { header: 'no', getItem : function (item, index) {
-                console.log(item);
+                
                 var templated = $("#playlistRow_tmpl").jqote({ 'item': item, 'index': index });
                 return $(templated)[0];
             }
