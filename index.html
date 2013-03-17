@@ -19,7 +19,7 @@
         
         <script src="/js/jTmpl.js"></script>
         <script src="/js/jargs.js?rel=1.0"></script>
-        <script src="/js/flap.js?rel=1.1.13"></script>
+        <script src="/js/flap.js?rel=1.1.14"></script>
 
     </head>
     <body>
@@ -61,13 +61,13 @@
                     </div>
 
                     <script type="text/html" id="prepareToShare_tmpl">
-                      <div id="<%=uri%>">
+                      <div id="<%=this.uri%>">
                         <div>
-                          <a class="artistLink"><img class="artistimage" src="<%=image%>"/></a>
+                          <a class="artistLink"><img class="artistimage" src="<%=this.image%>"/></a>
                         </div>
                         <div class="grid_6 omega contents">
                           <p><b><%=name%></b></p>
-                          <button class="add-honk button icon" onclick="federate('<%=uri%>');"><span class="goose-blue"></span>honk honk</button>
+                          <button class="add-honk button icon" onclick="federate('<%=this.uri%>');"><span class="goose-blue"></span>honk honk</button>
                         </div>
                       </div>
                     </script>

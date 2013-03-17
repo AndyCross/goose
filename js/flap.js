@@ -4,6 +4,7 @@ var gooseHub = null;
 var session = null;
 var models = null;
 var listView = null;
+var player = null;
 
 require([
         '$api/models',
@@ -16,6 +17,7 @@ require([
         ], function(modelsGlob, Location, Search, Toplist, buttons, List, Image) {
 
     models = modelsGlob;       
+    player = models.player;
     listView = List;
 
 /* this is a jqote test
@@ -78,8 +80,8 @@ function search()
 
 function stage(trackUri)
 {
-	var t = models.Track.fromURI(trackUri).load('name').done(function(track) {
-			    $("#prepareToShare").html(tmpl("prepareToShare_tmpl", track));
+	var t = models.Track.fromURI(trackUri).load('name', 'image').done(function(track) {
+			    $("#prepareToShare").html($("#prepareToShare_tmpl").jqote(track));
 			});
 
     $(".artistLink").attr("href", t.uri);
@@ -144,7 +146,7 @@ function getCommonList(playlist)
 
 function handleDataReceived(data)
 {
-    console.log(data);
+    /*console.log(data);
     $("#data").html(data);
 
     var p = player.play(data);
@@ -170,7 +172,7 @@ function handleDataReceived(data)
 
 
     var link = new models.Link(trackUri);
-    $(".artistLink").attr("href", link.uri);
+    $(".artistLink").attr("href", link.uri);*/
 }       
 
 function setStateSending(value)
@@ -300,7 +302,7 @@ function handleStartUp() {
         console.log(data);
         $("#data").html(data);
 
-        var p = player.play(data);
+        var p = player.playTrack(models.Track.fromURI(data));
 
         $('#taildetails').empty();
         $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>");
