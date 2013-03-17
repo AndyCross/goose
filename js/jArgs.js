@@ -18,7 +18,9 @@ player.observe(models.EVENT.CHANGE, handlePlayerChange);
 */
 
 function handleArgs() {
-	var state = session.state;
+	
+	
+	var state = session.online;
 	if (state !== 2) //if not offline
 	{
 		var args = models.application.arguments;

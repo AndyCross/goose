@@ -1,23 +1,25 @@
 <!DOCTYPE html>
     <head>
         <!-- Spotify CSS files -->
-        <link rel="stylesheet" type="text/css" href="sp://resources/css/adam.css">
-        <link rel="stylesheet" type="text/css" href="sp://resources/css/api.css">
-        <link rel="stylesheet" type="text/css" href="sp://resources/css/player.css">
-        <link rel="stylesheet" type="text/css" href="sp://resources/css/list.css">
+        <style>
+            @import url('$views/css/buttons.css');
+            @import url('$views/css/image.css');
+            @import url('$views/css/list.css');
+        </style>
 
         <!-- Project CSS files -->
         <link rel="stylesheet" type="text/css" href="css/main.css">
         <link rel="stylesheet" type="text/css" href="css/github.css">
-        <link rel="stylesheet" type="text/css" href="css/goose.css?rel=2">
+        <link rel="stylesheet" type="text/css" href="css/goose.css?rel=5">
 
         <script src="/js/jquery.min.js"></script>
         <script src="/js/jquery.signalR.min.js"></script>
+        <script src="/js/jquery.jqote2.min.js"></script>
         <script src="http://gooser.azurewebsites.net/gosling/hubs" type="text/javascript"></script>
         
         <script src="/js/jTmpl.js"></script>
         <script src="/js/jargs.js?rel=1.0"></script>
-        <script src="/js/flap.js?rel=1.1.2"></script>
+        <script src="/js/flap.js?rel=1.1.13"></script>
 
     </head>
     <body>
@@ -25,7 +27,7 @@
             <div id="index" class="section">
                 <img src="/img/goose300x300.png" class="right" />
                 <h2>Goose</h2>
-                <h3>V0.0.36</h3>
+                <h3>V0.0.37</h3>
 
                 <p>Geo-synchronise playing.</p>
                 <p>The idea on this tab is that we'll have a simple instruction on how the app works and maybe a tutorial video or something.
@@ -70,6 +72,24 @@
                       </div>
                     </script>
 
+                    <script type="text/html" id="playlistRow_tmpl">
+                    <![CDATA[
+                    <tr draggable="false" class="sp-list-item" data-uri="<%=this.item.uri%>"><td class="sp-list-cell sp-list-cell-star"><span class="sp-icon-star-hitarea"><span class="sp-icon-star sp-icon-starred"></span></span><span class="sp-icon-nowplaying"></span></td><td class="sp-list-cell sp-list-cell-track" style="width: 40%; "><%=this.item.name%></td><td class="sp-list-cell sp-list-cell-artist" style="width: 15%; "><a href="<%=this.item.artists[0].uri%>" data-uri="<%=this.item.artists[0].uri%>"><%=this.item.artists[0].name%></a></td><td class="sp-list-cell sp-list-cell-time">3:34</td><td class="sp-list-cell sp-list-cell-album" style="width: 20%; "><a href="<%=this.item.album.uri%>" data-uri="<%=this.item.album.uri%>"><%=this.item.album.name%></a></td>
+                        <td class="sp-list-cell" style="width:25%"><span class='sp-right'><button class='' onclick="stage('<%=this.item.uri%>')"><span class='goose-dark'></span>honk</button></span></td>
+                    </tr>
+                     ]]>
+                    </script>
+
+                <div id="playlistHeader" style="">
+                    <div class="sp-list-header-table-wrapper">
+                        <table class="sp-list-header-table">
+                          <colgroup class="sp-list-colgroup"><col style="width: 30px; "><col style="width: 40%; "><col style="width: 15%; "><col style="width: 58px; "><col style="width: 20%; "><col style="width:25%"></colgroup>
+                          <tbody>
+                            <tr class="sp-list-header-row"><th class="sp-list-heading sp-list-cell-star">&nbsp;</th><th class="sp-list-heading sp-list-cell-track">Track<div class="sp-list-heading-handle"></div></th><th class="sp-list-heading sp-list-cell-artist">Artist<div class="sp-list-heading-handle"></div></th><th class="sp-list-heading sp-list-cell-time">Time<div class="sp-list-heading-handle"></div></th><th class="sp-list-heading sp-list-cell-album">Album<div class="sp-list-heading-handle"></div></th><th>Goose</th></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                </div>
                 <div id="playlistDiv"></div>
             </div>
 

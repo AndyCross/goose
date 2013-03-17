@@ -3,6 +3,7 @@ var stateSending = false;
 var gooseHub = null;
 var session = null;
 var models = null;
+var listView = null;
 
 require([
         '$api/models',
@@ -15,6 +16,23 @@ require([
         ], function(modelsGlob, Location, Search, Toplist, buttons, List, Image) {
 
     models = modelsGlob;       
+    listView = List;
+
+/* this is a jqote test
+    try {
+        models.fromURI('spotify:track:7CtpxIjWfynJtKrgVBG8T9').load('name', 'album', 'artists', 'duration').done(
+            function (item) {
+                var index = 0;
+                $("#data").append(
+                    $("#playlistRow_tmpl").jqote({ 'item': item, 'index': index })
+                );
+            }
+        );
+    } catch (err) { 
+        console.log(err);
+    }
+    */
+
     //command session to load 
     models.session.load('online').done( function() {
         session = models.session;
@@ -102,7 +120,17 @@ function federate(trackUri)
 
 function getCommonList(playlist)
 {
-	return new views.List(playlist, function(track) {
+    var list = listView.forPlaylist(playlist, { header: 'no', getItem : function (item, index) {
+                console.log(item);
+                var templated = $("#playlistRow_tmpl").jqote({ 'item': item, 'index': index });
+                return $(templated)[0];
+            }
+        }
+    );
+
+    return list;
+
+	/*return new views.List(playlist, function(track) {
                 var trackEx = new views.Track(track,
                                     views.Track.FIELD.NAME |
                                     views.Track.FIELD.STAR |
@@ -111,7 +139,7 @@ function getCommonList(playlist)
 
                 $(trackEx.node).append("<span class='sp-right'><button class='add-honk button icon' onclick='stage(\"" + track.uri + "\")'><span class='goose-dark'></span>honk</button></span>");
                 return trackEx;
-                                            });
+                                            });*/
 
 }
 
@@ -210,7 +238,7 @@ function showTail(track)
 }
 
 function handleDragEnter(e) {
-    this.style.background = '#444444';
+    this.style.background = '#999';
 }
 
 function handleDragOver(e) {
@@ -220,11 +248,11 @@ function handleDragOver(e) {
 }
 
 function handleDragLeave(e) {
-    this.style.background = '#333333';
+    this.style.background = '#aaa';
 }
 
 function handleDrop(e) {
-    this.style.background = '#333333';
+    this.style.background = '#aaa';
     $("#lead-drop-data").empty();
     var uri = e.dataTransfer.getData('Text').toSpotifyURI();
     console.log(uri);
@@ -246,7 +274,7 @@ function handleDrop(e) {
 
 function drawPlaylistForUri(uri)
 {
-    models.Playlist.fromURI(uri, function(playListDrop) {
+    models.Playlist.fromURI(uri).load('tracks').done(function(playListDrop) {
 
         var list = getCommonList(playListDrop);
 
@@ -254,6 +282,8 @@ function drawPlaylistForUri(uri)
         $('#playlistDiv').empty();
         document.getElementById('playlistDiv').appendChild(list.node);
 
+        list.init();
+        
     });
 }
 
