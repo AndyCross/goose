@@ -122,6 +122,10 @@ function federate(trackUri)
 function getCommonList(playlist)
 {
     var list = listView.forPlaylist(playlist, { header: 'no', getItem : function (item, index) {
+
+                console.log(item.duration);
+                var formattedDuration = formatMillisecondsToMinutes(item.duration);
+                item.formattedDuration = formattedDuration;
                 
                 var templated = $("#playlistRow_tmpl").jqote({ 'item': item, 'index': index });
                 return $(templated)[0];
@@ -142,6 +146,23 @@ function getCommonList(playlist)
                 return trackEx;
                                             });*/
 
+}
+
+function formatMillisecondsToMinutes(milliseconds)
+{
+    var seconds = milliseconds/1000;
+    var minutes = Math.floor(seconds/60);
+    var secondsRemainder = seconds % 60;
+
+    var format = minutes + ":" + zeropad(secondsRemainder, 2);
+    console.log(format);
+    return format;
+}
+
+function zeropad(number, size) {
+  number = number.toString();
+  while (number.length < size) number = "0" + number;
+  return number;
 }
 
 function handleDataReceived(data)
