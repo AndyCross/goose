@@ -5,6 +5,7 @@ var session = null;
 var models = null;
 var listView = null;
 var player = null;
+var imageView = null;
 
 require([
         '$api/models',
@@ -14,26 +15,33 @@ require([
         '$views/buttons',
         '$views/list#List',
         '$views/image#Image'
-        ], function(modelsGlob, Location, Search, Toplist, buttons, List, Image) {
+        ], function(modelsGlob, Location, Search, Toplist, buttons, List, imageGlob) {
+
+var uri = 'spotify:user:bareweb:playlist:63dps4lSkCPnh2zyjOaMBh'; 
+modelsGlob.Playlist.fromURI(uri).load('tracks').done(function(playlist) {
+
+        var list = List.forPlaylist(playlist, { header: 'no', getItem : function (item, index) {
+
+                item.album.load('name').done(function(album) {
+                    var templated = "<div>"+item.album.name+"</div>";
+                    return $(templated)[0];
+                });
+            }
+        }
+    );
+        imageView = imageGlob;
+
+        console.log(list);
+        $('#playlistDiv').empty();
+        document.getElementById('playlistDiv').appendChild(list.node);
+
+        list.init();
+        
+    });
 
     models = modelsGlob;       
     player = models.player;
     listView = List;
-
-/* this is a jqote test
-    try {
-        models.fromURI('spotify:track:7CtpxIjWfynJtKrgVBG8T9').load('name', 'album', 'artists', 'duration').done(
-            function (item) {
-                var index = 0;
-                $("#data").append(
-                    $("#playlistRow_tmpl").jqote({ 'item': item, 'index': index })
-                );
-            }
-        );
-    } catch (err) { 
-        console.log(err);
-    }
-    */
 
     //command session to load 
     models.session.load('online').done( function() {
@@ -80,8 +88,12 @@ function search()
 
 function stage(trackUri)
 {
-	var t = models.Track.fromURI(trackUri).load('name', 'image').done(function(track) {
-			    $("#prepareToShare").html($("#prepareToShare_tmpl").jqote(track));
+    console.log(trackUri);
+	var t = models.Track.fromURI(trackUri).load('name', 'image', 'artists', 'album').done(function(track) {
+                track.album.load('name').done(function(album) {
+                
+                $("#prepareToShare").html($("#prepareToShare_tmpl").jqote(track));
+                });   
 			});
 
     $(".artistLink").attr("href", t.uri);
@@ -123,10 +135,9 @@ function getCommonList(playlist)
 {
     var list = listView.forPlaylist(playlist, { header: 'no', getItem : function (item, index) {
 
-                console.log(item.duration);
                 var formattedDuration = formatMillisecondsToMinutes(item.duration);
                 item.formattedDuration = formattedDuration;
-                
+
                 var templated = $("#playlistRow_tmpl").jqote({ 'item': item, 'index': index });
                 return $(templated)[0];
             }
@@ -155,7 +166,6 @@ function formatMillisecondsToMinutes(milliseconds)
     var secondsRemainder = seconds % 60;
 
     var format = minutes + ":" + zeropad(secondsRemainder, 2);
-    console.log(format);
     return format;
 }
 
@@ -212,34 +222,32 @@ function setStateSending(value)
 function showTail(track)
 {
     console.log(track);
-    var link = new models.Link(track.uri);
-
     $('#taildetails').empty(); $("#starredness").empty();
+    var link = new models.fromURI(uri);
 
-    if (link.type === models.Link.TYPE.ARTIST)
-            playerView.context = models.Artist.fromURI(link.uri);
-        else if (link.type === models.Link.TYPE.PLAYLIST)
-            playerView.context = models.Playlist.fromURI(link.uri);
-        else if (link.type === models.Link.TYPE.INTERNAL) {
-            if (tempPlaylist.length > 0)
-                playerView.context = tempPlaylist;
-        }
+    if (link instanceof models.Playlist || link instanceof models.Artist)
+    {
+        //set a context
+    }
             
-        //$("#now-playing").empty();
-        var cover = $(document.createElement('div')).attr('id', 'player-image');
+    //$("#now-playing").empty();
+    var cover = $(document.createElement('div')).attr('id', 'player-image');
 
-        if (link.type === models.Link.TYPE.TRACK || link.type === models.Link.TYPE.LOCAL_TRACK ||
-            (link.type === models.Link.TYPE.INTERNAL && tempPlaylist.length == 0)) {
-            var img = new ui.SPImage(track.data.album.cover ? track.data.album.cover : "sp://import/img/placeholders/300-album.png");
-            cover.append($(document.createElement('a')).attr('href', track.data.album.uri));
-            cover.children().append(img.node);
-        } else {
-            cover.append($(playerImage.node));
-        }
+    if (link instanceof models.Track)
+    {
+        var img = imageView.forTrack(link);
 
-        console.log(cover);
-        $("#taildetails").html(cover);
-        
+        //var img = new ui.SPImage(track.data.album.cover ? track.data.album.cover : "sp://import/img/placeholders/300-album.png");
+        //cover.append($(document.createElement('a')).attr('href', track.data.album.uri));
+        cover.children().append(img.node);
+    }
+    else
+    {
+        cover.append($(playerImage.node));
+    }
+
+    console.log(cover);
+    $("#taildetails").html(cover);
     
     var song = '<h2><a href="'+track.uri+'">'+track.name+'</a></h2>';
     var album = '<h2><a href="'+track.album.uri+'">'+track.album.name+'</a></h2>';
