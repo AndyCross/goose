@@ -6,6 +6,7 @@ var models = null;
 var listView = null;
 var player = null;
 var imageView = null;
+var searcher = null;
 
 require([
         '$api/models',
@@ -22,6 +23,7 @@ require([
     models = modelsGlob;       
     player = models.player;
     listView = List;
+    searcher = Search;
 
     //command session to load 
     models.session.load('online').done( function() {
@@ -45,26 +47,36 @@ function search()
 	$('#prepareToShare').empty();
     $('#playlistDiv').html("<div class='loading'><div class='throbber'><div></div></div></div>")
 
-    var search = new models.Search(document.getElementById('searchTerm').value);       
-    var playlist = new models.Playlist(); 
-    search.localResults = models.LOCALSEARCHRESULTS.APPEND;
+    var search = searcher.search(document.getElementById('searchTerm').value);    
+    search.tracks.snapshot().done(function(searchRes)
+        {
+            models.Playlist.createTemporary("searchResults").done(function(playlist)
+            {
+                playlist.load('tracks').done(function(playlistHack){ 
+                    searchRes.loadAll('name').each(function(track){
+                        playlist.tracks.add(track);
+                    });
 
-    search.observe(models.EVENT.CHANGE, function() {
+                    var list = getCommonList(playlist);
+                    console.log(list);
+                    $('#playlistDiv').empty();
+                    document.getElementById('playlistDiv').appendChild(list.node);
 
-        search.tracks.forEach(function(track) {
-            playlist.add(track);
+                    list.init();
+                });
+            });
         });
 
-        
-		var list = getCommonList(playlist);
+    /*models.Playlist.createTemporary("searchResults").done(function(playlist)
+        {
+            search.tracks.forEach(function(track) {
+                playlist.tracks.add(track);
+                var list = getCommonList(playlist);
 
-        //list.node.classList.add('sp-light');
-
-        $('#playlistDiv').empty();
-        document.getElementById('playlistDiv').appendChild(list.node);
-    });
-
-    search.appendNext();                
+                $('#playlistDiv').empty();
+                document.getElementById('playlistDiv').appendChild(list.node);
+            });
+        });*/
 }
 
 function stage(trackUri)
@@ -114,6 +126,7 @@ function federate(trackUri)
 
 function getCommonList(playlist)
 {
+    console.log(playlist);
     var list = listView.forPlaylist(playlist, { header: 'no', getItem : function (item, index) {
 
                 var formattedDuration = formatMillisecondsToMinutes(item.duration);
