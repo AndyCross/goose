@@ -1,6 +1,7 @@
 /* Main Elements */
 html {-webkit-user-select: auto;
-font-family: "Lucida Grande", Helvetica, Georgia
+font-family: "Lucida Grande", Helvetica, Georgia;
+overflow: auto;
 }
 body {min-height: 100%;padding: 10px 0 20px;box-sizing: border-box;}
 #wrapper {position: relative;z-index: 2;max-width: 900px;min-height: 100%;margin: 0 auto;padding: 20px;
