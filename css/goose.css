@@ -125,3 +125,8 @@ span.goose-dark
 	text-decoration: none;
 	color:#000;
 }
+
+.subtleLinks a:hover
+{
+	text-decoration: underline;
+}
