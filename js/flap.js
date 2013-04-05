@@ -77,7 +77,7 @@ function buildGoosesongList()
         {
             console.log(item);
             models.fromURI(item).load('name', 'artists', 'album').done(function(track)
-                {
+                { 
                     var templated = $('#playlistGooseSongRow_tmpl').jqote(track);
                     $('#playlistGooseSong').append(templated);
                 });
@@ -97,8 +97,6 @@ function stageMany(trackUri)
 
 function stage(trackUri)
 {
-    console.log(trackUri);
-
 	var t = models.Track.fromURI(trackUri).load('name', 'image', 'artists', 'album').done(function(track) {
                 track.album.load('name').done(function(album) {
                 
@@ -159,17 +157,6 @@ function getCommonList(playlist)
 
     return list;
 
-	/*return new views.List(playlist, function(track) {
-                var trackEx = new views.Track(track,
-                                    views.Track.FIELD.NAME |
-                                    views.Track.FIELD.STAR |
-                                    views.Track.FIELD.ARTIST |
-                                    views.Track.FIELD.DURATION);
-
-                $(trackEx.node).append("<span class='sp-right'><button class='add-honk button icon' onclick='stage(\"" + track.uri + "\")'><span class='goose-dark'></span>honk</button></span>");
-                return trackEx;
-                                            });*/
-
 }
 
 function formatMillisecondsToMinutes(milliseconds)
@@ -186,38 +173,7 @@ function zeropad(number, size) {
   number = number.toString();
   while (number.length < size) number = "0" + number;
   return number;
-}
-
-function handleDataReceived(data)
-{
-    /*console.log(data);
-    $("#data").html(data);
-
-    var p = player.play(data);
-
-    $('#taildetails').empty();
-    $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>")
-
-    var t1 = models.Track.fromURI(data, function(track) {
-                var song = '<h2><a href="'+track.uri+'">'+track.name+'</a></h2>';
-                console.log(song);
-                var album = '<a href="'+track.album.uri+'">'+track.album.name+'</a>';
-                var artist = '<h1><a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a></h1>';
-                var context = player.context, extra ="";
-                if(context) { extra = ' from <a href="'+context+'">here</a>'; } // too lazy to fetch the actual context name
-                
-                $("#nowPlaying").html(artist + song + album + extra);
-                alert($("nowPlaying").html());
-
-                var templated = tmpl("taildetails_tmpl", track);
-                $("#taildetails").html(templated);
-
-            });                         
-
-
-    var link = new models.Link(trackUri);
-    $(".artistLink").attr("href", link.uri);*/
-}       
+} 
 
 function setStateSending(value)
 {
@@ -234,25 +190,19 @@ function setStateSending(value)
 
 function showTail(track)
 {
-    console.log(track);
-    $('#taildetails').empty(); $("#starredness").empty();
-    var link = new models.fromURI(uri);
-
-    if (link instanceof models.Playlist || link instanceof models.Artist)
-    {
-        //set a context
-    }
+    $('#taildetails').empty(); 
+    $("#starredness").empty();
             
     //$("#now-playing").empty();
     var cover = $(document.createElement('div')).attr('id', 'player-image');
 
-    if (link instanceof models.Track)
+    if (track instanceof models.Track)
     {
-        var img = imageView.forTrack(link);
+        var img = imageView.forTrack(track, { width: 100, height:100 });
 
         //var img = new ui.SPImage(track.data.album.cover ? track.data.album.cover : "sp://import/img/placeholders/300-album.png");
         //cover.append($(document.createElement('a')).attr('href', track.data.album.uri));
-        cover.children().append(img.node);
+        cover.append(img.node);
     }
     else
     {
@@ -265,11 +215,11 @@ function showTail(track)
     var song = '<h2><a href="'+track.uri+'">'+track.name+'</a></h2>';
     var album = '<h2><a href="'+track.album.uri+'">'+track.album.name+'</a></h2>';
 
-    var artist = "<h2>" + track.album.artist.name + "</h2>";
-    if (track.album.artist.uri != null)
+    var artist = "<h2>" + track.album.artists[0].name + "</h2>";
+    /*if (track.album.artist.uri != null)
     {
         artist = '<a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a>';
-    }
+    }*/
 
     var context = player.context, extra ="";
     if(context) { extra = '<a href="'+context+'">here</a>'; } // too lazy to fetch the actual context name
@@ -349,10 +299,9 @@ function handleStartUp() {
         $('#taildetails').empty();
         $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>");
 
-        var t1 = models.Track.fromURI(data, function(track) {
+        models.Track.fromURI(data).load('name', 'album', 'artists').done(function(track) {
                     showTail(track);
-                });                         
-
+                });
     };
 
     gooseHub.client.syncTrack = function(data) {
