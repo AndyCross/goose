@@ -20,8 +20,7 @@ player.observe(models.EVENT.CHANGE, handlePlayerChange);
 function handleArgs() {
 	
 	
-	var state = session.online;
-	if (state !== 2) //if not offline
+	if (session.online) //if not offline
 	{
 		var args = models.application.arguments;
 		$(".section").hide();	// Hide all sections
