@@ -70,17 +70,41 @@ function search()
         });
 }
 
+function buildGoosesongList()
+{
+    $('#playlistGooseSong').empty();
+    $.each(goosesongListing.getTracks(), function(index, item)
+        {
+            console.log(item);
+            models.fromURI(item).load('name', 'artists', 'album').done(function(track)
+                {
+                    var templated = $('#playlistGooseSongRow_tmpl').jqote(track);
+                    $('#playlistGooseSong').append(templated);
+                });
+        });
+}
+
+function stageMany(trackUri)
+{
+    goosesongListing.addSong(trackUri);
+
+    $("#prepareToShare").hide();
+
+    buildGoosesongList();
+
+    $("#playlistGooseSong").show('slow');
+}
+
 function stage(trackUri)
 {
     console.log(trackUri);
 
-    goosesongListing.addSong(trackUri);
-    console.log(goosesongListing);
-
 	var t = models.Track.fromURI(trackUri).load('name', 'image', 'artists', 'album').done(function(track) {
                 track.album.load('name').done(function(album) {
                 
+                $("#playlistGooseSong").hide();
                 $("#prepareToShare").html($("#prepareToShare_tmpl").jqote(track));
+                $("#prepareToShare").show('slow');
                 });   
 			});
 
