@@ -119,3 +119,9 @@ span.goose-dark
 	font-size:16px;
 	margin:16px
 }
+
+.subtleLinks a 
+{
+	text-decoration: none;
+	color:#000;
+}
