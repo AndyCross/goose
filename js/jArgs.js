@@ -20,7 +20,7 @@ player.observe(models.EVENT.CHANGE, handlePlayerChange);
 function handleArgs() {
 	
 	
-	if (session.online) //if not offline
+	if (session.online || $("#overrideSession").is(":checked")) //if not offline
 	{
 		var args = models.application.arguments;
 		$(".section").hide();	// Hide all sections

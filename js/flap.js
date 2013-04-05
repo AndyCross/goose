@@ -7,6 +7,7 @@ var listView = null;
 var player = null;
 var imageView = null;
 var searcher = null;
+var goosesongListing = null;
 
 require([
         '$api/models',
@@ -24,6 +25,7 @@ require([
     player = models.player;
     listView = List;
     searcher = Search;
+    goosesongListing = new goosesong();
 
     //command session to load 
     models.session.load('online').done( function() {
@@ -66,22 +68,15 @@ function search()
                 });
             });
         });
-
-    /*models.Playlist.createTemporary("searchResults").done(function(playlist)
-        {
-            search.tracks.forEach(function(track) {
-                playlist.tracks.add(track);
-                var list = getCommonList(playlist);
-
-                $('#playlistDiv').empty();
-                document.getElementById('playlistDiv').appendChild(list.node);
-            });
-        });*/
 }
 
 function stage(trackUri)
 {
     console.log(trackUri);
+
+    goosesongListing.addSong(trackUri);
+    console.log(goosesongListing);
+
 	var t = models.Track.fromURI(trackUri).load('name', 'image', 'artists', 'album').done(function(track) {
                 track.album.load('name').done(function(album) {
                 
