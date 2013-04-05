@@ -17,27 +17,7 @@ require([
         '$views/image#Image'
         ], function(modelsGlob, Location, Search, Toplist, buttons, List, imageGlob) {
 
-var uri = 'spotify:user:bareweb:playlist:63dps4lSkCPnh2zyjOaMBh'; 
-modelsGlob.Playlist.fromURI(uri).load('tracks').done(function(playlist) {
-
-        var list = List.forPlaylist(playlist, { header: 'no', getItem : function (item, index) {
-
-                item.album.load('name').done(function(album) {
-                    var templated = "<div>"+item.album.name+"</div>";
-                    return $(templated)[0];
-                });
-            }
-        }
-    );
         imageView = imageGlob;
-
-        console.log(list);
-        $('#playlistDiv').empty();
-        document.getElementById('playlistDiv').appendChild(list.node);
-
-        list.init();
-        
-    });
 
     models = modelsGlob;       
     player = models.player;
@@ -46,6 +26,7 @@ modelsGlob.Playlist.fromURI(uri).load('tracks').done(function(playlist) {
     //command session to load 
     models.session.load('online').done( function() {
         session = models.session;
+        session.addEventListener('change:online', handleSessionState);
 
         // When application has loaded, run pages function
         models.application.load('arguments').done(handleArgs);

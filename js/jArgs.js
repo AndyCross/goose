@@ -58,8 +58,8 @@ function handleLinks() {
 
 
 function handleSessionState() {
-	var state = session.state;
-	if (state === 2)
+	
+	if (!session.online)
 	{
 		$(".section").hide();//hide all sections
 		$("#offline").show();//show the offline view
