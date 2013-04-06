@@ -34,4 +34,14 @@ function goosesong() {
 	{
 		return this.trackList;
 	}
+
+	this.getPosition = function()
+	{
+		return this.index;
+	}
+
+	this.currentSong = function() 
+	{
+		return this.trackList[this.index];
+	}
 }

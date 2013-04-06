@@ -77,15 +77,22 @@ function handlePlayerChange()
 	if (!player.playing) state = "paused";
 
 	var positionState = "from beginning";
-	if (player.position === null) 
-	{
-		state = "stopped";
-		positionState = "by completing";
-	}
 
 	if (player.position > 0)
 	{
 		positionState = "at custom postion (ms) " + player.position; 
+	}
+	
+	if (player.position == 0 && !player.playing && player.track.uri === goosesongListing.currentSong()) 
+	{
+		state = "stopped";
+		positionState = "by completing";
+
+		if (stateSinging)
+		{
+			var nextSong = goosesongListing.nextSong();
+			federateManySingle(nextSong);
+		}
 	}
 
 	console.log(state + " " + positionState);

@@ -1,5 +1,6 @@
 var timeout = null;
 var stateSending = false;
+var stateSinging = false;
 var gooseHub = null;
 var session = null;
 var models = null;
@@ -38,6 +39,7 @@ require([
 
         // When arguments change, run pages function
         models.application.addEventListener('arguments', handleArgs);
+
     });//session.load
 
     handleStartUp();
@@ -86,7 +88,21 @@ function buildGoosesongList()
             console.log(item);
             models.fromURI(item).load('name', 'artists', 'album').done(function(track)
                 { 
+                    if (index < goosesongListing.getPosition())
+                    {
+                        track.highlightClass = "played";
+                    }
+                    else if (index == goosesongListing.getPosition())
+                    {
+                        track.highlightClass = "playing";
+                    }
+                    else
+                    {
+                        track.highlightClass = "pending";
+                    }
+
                     var templated = $('#playlistGooseSongRow_tmpl').jqote(track);
+                    console.log(track);
                     $('#playlistGooseSong').append(templated);
                 });
         });
@@ -120,9 +136,31 @@ function stage(trackUri)
 
 function federate(trackUri)
 {
-    setStateSending(true);
+    setStateSending(true, false);
     gooseHub.server.playTrack(trackUri);
 
+    setCommonPlayTracker();
+}
+
+function federateMany()
+{
+    setStateSending(true, true);
+    var firstTrack = goosesongListing.nextSong(); //note: state of playlist here is liable to change
+
+    gooseHub.server.playTrack(firstTrack);
+
+    setCommonPlayTracker();
+}
+
+/// Used to do a lightweight federate during a federateMany. Does not need to set up state or tracking in this instance as it 
+/// has already been performed
+function federateManySingle(trackUri)
+{
+    gooseHub.server.playTrack(trackUri);
+}
+
+function setCommonPlayTracker()
+{
     if (timeout !== null)
     {
         clearInterval(timeout);
@@ -183,12 +221,16 @@ function zeropad(number, size) {
   return number;
 } 
 
-function setStateSending(value)
+function setStateSending(sending, singing)
 {
-    stateSending = value;
+    stateSending = sending;
+    stateSinging = singing;
 
-    if (value) {
+    if (sending) {
         $("#sendingInfo").show();
+
+        //when events happen in the player, subscribe and respond to events
+        player.addEventListener('change', handlePlayerChange);
     }
     else {
         $("#sendingInfo").hide();
@@ -302,7 +344,12 @@ function handleStartUp() {
         console.log(data);
         $("#data").html(data);
 
-        var p = player.playTrack(models.Track.fromURI(data));
+        var p = player.playTrack(models.Track.fromURI(data)).done(function ()
+            {
+                if (stateSinging) {
+                    buildGoosesongList();
+                }
+            });
 
         $('#taildetails').empty();
         $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>");

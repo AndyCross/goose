@@ -130,3 +130,17 @@ span.goose-dark
 {
 	text-decoration: underline;
 }
+
+.played {
+	text-decoration: line-through;
+	color: #ccc;
+}
+
+.playing {
+	color: #00f;
+}
+
+.pending {
+
+}
+
