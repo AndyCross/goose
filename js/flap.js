@@ -8,6 +8,7 @@ var player = null;
 var imageView = null;
 var searcher = null;
 var goosesongListing = null;
+var tempPlaylistSearch = null;
 
 require([
         '$api/models',
@@ -52,8 +53,15 @@ function search()
     var search = searcher.search(document.getElementById('searchTerm').value);    
     search.tracks.snapshot().done(function(searchRes)
         {
+            if (tempPlaylistSearch != null)
+            {
+                tempPlaylistSearch.tracks.clear();
+            }
+
+
             models.Playlist.createTemporary("searchResults").done(function(playlist)
             {
+                tempPlaylistSearch = playlist;
                 playlist.load('tracks').done(function(playlistHack){ 
                     searchRes.loadAll('name').each(function(track){
                         playlist.tracks.add(track);
