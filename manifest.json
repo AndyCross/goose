@@ -36,13 +36,7 @@
 		{ "arguments" : "tailgoose",
 			"title": { "en" : "Tail"
 			}
-		},
-		{
-			"arguments": "about",
-			"title": {
-				"en": "About Goose"
-			}
-        }
+		}
 	],
 	"Dependencies": {
 	      "api": "1.10.2",
