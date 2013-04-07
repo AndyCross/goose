@@ -144,12 +144,19 @@ function federate(trackUri)
 
 function federateMany()
 {
-    setStateSending(true, true);
-    var firstTrack = goosesongListing.nextSong(); //note: state of playlist here is liable to change
+    if (goosesongListing.hasMoreSongs())
+    {
+        setStateSending(true, true);
+        var firstTrack = goosesongListing.nextSong(); //note: state of playlist here is liable to change
 
-    gooseHub.server.playTrack(firstTrack);
+        gooseHub.server.playTrack(firstTrack);
 
-    setCommonPlayTracker();
+        setCommonPlayTracker();
+    }
+    else
+    {
+        $('#goosesongMessage').html("Nice try swan beak, there's no more songs to sing! And no, I won't clear the list for you (yet).");
+    }
 }
 
 /// Used to do a lightweight federate during a federateMany. Does not need to set up state or tracking in this instance as it 

@@ -44,4 +44,9 @@ function goosesong() {
 	{
 		return this.trackList[this.index];
 	}
+
+	this.hasMoreSongs = function()
+	{
+		return this.trackList.length > this.index+1;
+	}
 }

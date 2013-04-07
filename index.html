@@ -15,12 +15,12 @@
         <script src="/js/jquery.min.js"></script>
         <script src="/js/jquery.signalR.min.js"></script>
         <script src="/js/jquery.jqote2.min.js"></script>
-        <script type="text/javascript" src="/js/goosesong.js?rel=2"></script>
+        <script type="text/javascript" src="/js/goosesong.js?rel=4"></script>
         <script src="http://gooser.azurewebsites.net/gosling/hubs" type="text/javascript"></script>
         
         <script src="/js/jTmpl.js"></script>
-        <script src="/js/jargs.js?rel=1.7"></script>
-        <script src="/js/flap.js?rel=1.1.24"></script>
+        <script src="/js/jargs.js?rel=1.9"></script>
+        <script src="/js/flap.js?rel=1.1.25"></script>
 
     </head>
     <body>
@@ -28,7 +28,7 @@
             <div id="index" class="section">
                 <img src="/img/goose300x300.png" class="right" />
                 <h2>Goose</h2>
-                <h3>V0.1.11</h3>
+                <h3>V0.1.12</h3>
 
                 <p>Geo-synchronise playing.</p>
                 <p>The idea on this tab is that we'll have a simple instruction on how the app works and maybe a tutorial video or something.
@@ -62,8 +62,9 @@
 
                     <div id="prepareToShare"></div>
                     <div id="goosesongControl">
-                    <ol id="playlistGooseSong"></ol>
+                        <ol id="playlistGooseSong"></ol>
                         <button onclick="federateMany()">Sing</button>
+                        <div id="goosesongMessage"></div>
                     </div>
                     <script type="text/html" id="prepareToShare_tmpl">
                       <div id="<%=this.uri%>">

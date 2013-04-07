@@ -82,13 +82,15 @@ function handlePlayerChange()
 	{
 		positionState = "at custom postion (ms) " + player.position; 
 	}
-	
+
 	if (player.position == 0 && !player.playing && player.track.uri === goosesongListing.currentSong()) 
 	{
 		state = "stopped";
 		positionState = "by completing";
 
-		if (stateSinging)
+		buildGoosesongList();
+
+		if (stateSinging && goosesongListing.hasMoreSongs())
 		{
 			var nextSong = goosesongListing.nextSong();
 			federateManySingle(nextSong);
