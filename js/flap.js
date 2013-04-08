@@ -116,7 +116,7 @@ function stageMany(trackUri)
 
     buildGoosesongList();
 
-    $("#playlistGooseSong").show('slow');
+    $("#goosesongControl").show('slow');
 }
 
 function stage(trackUri)
