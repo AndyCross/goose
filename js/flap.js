@@ -142,6 +142,12 @@ function federate(trackUri)
     setCommonPlayTracker();
 }
 
+function federateClear()
+{
+    goosesongListing.clearTracks();
+    buildGoosesongList();
+}
+
 function federateMany()
 {
     if (goosesongListing.hasMoreSongs())

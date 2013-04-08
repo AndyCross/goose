@@ -35,6 +35,12 @@ function goosesong() {
 		return this.trackList;
 	}
 
+	this.clearTracks = function()
+	{
+		this.trackList.length = 0;
+		this.index = -1;
+	}
+
 	this.getPosition = function()
 	{
 		return this.index;
