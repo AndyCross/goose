@@ -10,6 +10,7 @@ var imageView = null;
 var searcher = null;
 var goosesongListing = null;
 var tempPlaylistSearch = null;
+var loadedList = null;
 
 require([
         '$api/models',
@@ -47,6 +48,11 @@ require([
 
 });//require
 
+function setLoadedList(playlist)
+{
+    loadedList = playlist;
+}
+
 function search()
 {
 	$('#prepareToShare').empty();
@@ -69,6 +75,7 @@ function search()
                         playlist.tracks.add(track);
                     });
 
+                    setLoadedList(playlist);
                     var list = getCommonList(playlist);
                     console.log(list);
                     $('#playlistDiv').empty();
@@ -106,6 +113,24 @@ function buildGoosesongList()
                     $('#playlistGooseSong').append(templated);
                 });
         });
+}
+
+function stageAll()
+{
+    $("#prepareToShare").hide();
+
+loadedList.tracks.snapshot().done(function(snapshot)
+        {
+            for (var i = 0; i < snapshot.length; i++) {
+                var item = snapshot.get(i);
+                console.log(item);
+                goosesongListing.addSong(item.uri);
+              }
+        });
+
+    buildGoosesongList();
+
+    $("#goosesongControl").show('slow');
 }
 
 function stageMany(trackUri)
@@ -332,6 +357,7 @@ function drawPlaylistForUri(uri)
 {
     models.Playlist.fromURI(uri).load('tracks').done(function(playListDrop) {
 
+        setLoadedList(playListDrop);
         var list = getCommonList(playListDrop);
 
         console.log(list);
