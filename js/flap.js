@@ -73,6 +73,7 @@ function search()
                 playlist.load('tracks').done(function(playlistHack){ 
                     searchRes.loadAll('name').each(function(track){
                         playlist.tracks.add(track);
+                        console.log(track);
                     });
 
                     setLoadedList(playlist);
@@ -90,36 +91,54 @@ function search()
 function buildGoosesongList()
 {
     $('#playlistGooseSong').empty();
-    $.each(goosesongListing.getTracks(), function(index, item)
-        {
-            console.log(item);
-            models.fromURI(item).load('name', 'artists', 'album').done(function(track)
-                { 
-                    if (index < goosesongListing.getPosition())
-                    {
-                        track.highlightClass = "played";
-                    }
-                    else if (index == goosesongListing.getPosition())
-                    {
-                        track.highlightClass = "playing";
-                    }
-                    else
-                    {
-                        track.highlightClass = "pending";
-                    }
+    var mosaic = "spotify:mosaic";
+    models.Playlist.createTemporary("goosesongList").done(function(playlistUnloaded)
+    {
+        playlistUnloaded.load('tracks').done(function(playlist) {
+            $.each(goosesongListing.getTracks(), function(index, item)
+            {
+                models.fromURI(item).load('name', 'artists', 'album').done(function(track)
+                    { 
+                        if (index < goosesongListing.getPosition())
+                        {
+                            track.highlightClass = "played";
+                        }
+                        else if (index == goosesongListing.getPosition())
+                        {
+                            track.highlightClass = "playing";
+                        }
+                        else
+                        {
+                            track.highlightClass = "pending";
+                        }
 
-                    var templated = $('#playlistGooseSongRow_tmpl').jqote(track);
-                    console.log(track);
-                    $('#playlistGooseSong').append(templated);
-                });
+                        var templated = $('#playlistGooseSongRow_tmpl').jqote(track);
+                        console.log(track);
+                        $('#playlistGooseSong').append(templated);
+                        
+                        playlist.tracks.add(track);
+
+                        if (index < 4)
+                        {
+                            mosaic += track.image.replace("spotify:image", "");
+                        }
+                    });
+            });
+
+            console.log(mosaic);
+            var imageForPlaylist = imageView.fromSource(mosaic, { height: 300, widht: 300 });
+            $('#playlistGooseSong').append(imageForPlaylist.node);
         });
+        
+
+    });
 }
 
 function stageAll()
 {
     $("#prepareToShare").hide();
 
-loadedList.tracks.snapshot().done(function(snapshot)
+    loadedList.tracks.snapshot().done(function(snapshot)
         {
             for (var i = 0; i < snapshot.length; i++) {
                 var item = snapshot.get(i);
@@ -343,6 +362,11 @@ function handleDrop(e) {
     if (linkDrop instanceof models.Playlist || linkDrop instanceof models.Album)
     {
         drawPlaylistForUri(linkDrop.uri);
+
+
+        var imageForPlaylist = imageView.forPlaylist(linkDrop, { height: 150, widht: 150 });
+        $('#lead-drop').html(imageForPlaylist.node);
+        $('#lead-drop').append($('#lead-drop-template').jqote(linkDrop));
     }
     else
     {

@@ -20,7 +20,7 @@
         
         <script src="/js/jTmpl.js"></script>
         <script src="/js/jargs.js?rel=1.9"></script>
-        <script src="/js/flap.js?rel=1.1.29"></script>
+        <script src="/js/flap.js?rel=1.1.35"></script>
 
     </head>
     <body>
@@ -28,7 +28,7 @@
             <div id="index" class="section">
                 <img src="/img/goose300x300.png" class="right" />
                 <h2>Goose</h2>
-                <h3>V0.1.16</h3>
+                <h3>V0.1.17</h3>
 
                 <p>Geo-synchronise playing.</p>
                 
@@ -63,6 +63,13 @@
                         <div id="lead-drop-data"></div>
                     </div>
 
+                    <script type="text/html" id="lead-drop-template">
+                    <![CDATA[
+                    <div><%=this.name%></div>
+                     ]]>
+                    </script>
+
+                    <div id="shareContext"></div>
                     <div id="prepareToShare"></div>
                     <div id="goosesongControl" style="display:none;">
                         <ol id="playlistGooseSong"></ol>
