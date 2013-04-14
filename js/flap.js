@@ -291,43 +291,57 @@ function setStateSending(sending, singing)
 
 function showTail(track)
 {
+    console.log(track);
+
     $('#taildetails').empty(); 
     $("#starredness").empty();
             
     //$("#now-playing").empty();
     var cover = $(document.createElement('div')).attr('id', 'player-image');
 
-    if (track instanceof models.Track)
-    {
-        var img = imageView.forTrack(track, { width: 100, height:100 });
+    try {
+        if (track instanceof models.Track)
+        {
+            var img = imageView.forTrack(track, { width: 100, height:100 });
 
-        //var img = new ui.SPImage(track.data.album.cover ? track.data.album.cover : "sp://import/img/placeholders/300-album.png");
-        //cover.append($(document.createElement('a')).attr('href', track.data.album.uri));
-        cover.append(img.node);
-    }
-    else
-    {
-        cover.append($(playerImage.node));
-    }
+            //var img = new ui.SPImage(track.data.album.cover ? track.data.album.cover : "sp://import/img/placeholders/300-album.png");
+            //cover.append($(document.createElement('a')).attr('href', track.data.album.uri));
+            cover.append(img.node);
+        }
+        else
+        {
+            cover.append($(playerImage.node));
+        }
 
-    $("#taildetails").html(cover);
+        $("#taildetails").html(cover);
+    }
+    catch (err) {
+        console.log(err);
+    }
     
     var song = '<div class="tailtrack"><a href="'+track.uri+'">'+track.name+'</a></div>';
-    var album = '<div class="tailalbum"><a href="'+track.album.uri+'">'+track.album.name+'</a></div>';
 
-    var artist = "<div class='tailartist'>" + track.album.artists[0].name + "</div>";
-    /*if (track.album.artist.uri != null)
+    models.fromURI(track.album.uri).load('name').done(function(albumDetails) 
     {
-        artist = '<a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a>';
-    }*/
+        var album = '<div class="tailalbum"><a href="'+track.album.uri+'">'+albumDetails.name+'</a></div>';
 
-    var context = player.context, extra ="";
-    if(context) { extra = '<a href="'+context+'">here</a>'; } // too lazy to fetch the actual context name
-    
-    $("#nowPlaying").html("<div>" + artist + song + album + extra + "</div>");
+        artist = "unknown artist";
+        if (track.artists) {
+         artist = "<div class='tailartist'>" + track.artists[0].name + "</div>";
+        }
+        /*if (track.album.artist.uri != null)
+        {
+            artist = '<a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a>';
+        }*/
+
+        var context = player.context, extra ="";
+        if(context) { extra = '<a href="'+context+'">here</a>'; } // too lazy to fetch the actual context name
+        
+        $("#nowPlaying").html("<div>" + artist + song + album + extra + "</div>");
 
 
-    doTailStar(track.uri, track.starred);
+        doTailStar(track.uri, track.starred);
+    });
 }
 
 function handleDragEnter(e) {
@@ -407,7 +421,7 @@ function handleStartUp() {
         $('#taildetails').empty();
         $('#taildetails').html("<div class='loading'><div class='throbber'><div></div></div></div>");
 
-        models.Track.fromURI(data).load('name', 'album', 'artists').done(function(track) {
+        models.Track.fromURI(data).load('name', 'image', 'artists', 'album').done(function(track) {
                     showTail(track);
                 });
     };
