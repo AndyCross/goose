@@ -73,12 +73,10 @@ function search()
                 playlist.load('tracks').done(function(playlistHack){ 
                     searchRes.loadAll('name').each(function(track){
                         playlist.tracks.add(track);
-                        console.log(track);
                     });
 
                     setLoadedList(playlist);
                     var list = getCommonList(playlist);
-                    console.log(list);
                     $('#playlistDiv').empty();
                     document.getElementById('playlistDiv').appendChild(list.node);
 
@@ -113,7 +111,6 @@ function buildGoosesongList()
                         }
 
                         var templated = $('#playlistGooseSongRow_tmpl').jqote(track);
-                        console.log(track);
                         $('#playlistGooseSong').append(templated);
                         
                         playlist.tracks.add(track);
@@ -125,7 +122,6 @@ function buildGoosesongList()
                     });
             });
 
-            console.log(mosaic);
             var imageForPlaylist = imageView.fromSource(mosaic, { height: 300, widht: 300 });
             $('#playlistGooseSong').append(imageForPlaylist.node);
         });
@@ -142,7 +138,6 @@ function stageAll()
         {
             for (var i = 0; i < snapshot.length; i++) {
                 var item = snapshot.get(i);
-                console.log(item);
                 goosesongListing.addSong(item.uri);
               }
         });
@@ -246,7 +241,6 @@ function setCommonPlayTracker()
 
 function getCommonList(playlist)
 {
-    console.log(playlist);
     var list = listView.forPlaylist(playlist, { header: 'no', getItem : function (item, index) {
 
                 var formattedDuration = formatMillisecondsToMinutes(item.duration);
@@ -316,13 +310,12 @@ function showTail(track)
         cover.append($(playerImage.node));
     }
 
-    console.log(cover);
     $("#taildetails").html(cover);
     
-    var song = '<h2><a href="'+track.uri+'">'+track.name+'</a></h2>';
-    var album = '<h2><a href="'+track.album.uri+'">'+track.album.name+'</a></h2>';
+    var song = '<div class="tailtrack"><a href="'+track.uri+'">'+track.name+'</a></div>';
+    var album = '<div class="tailalbum"><a href="'+track.album.uri+'">'+track.album.name+'</a></div>';
 
-    var artist = "<h2>" + track.album.artists[0].name + "</h2>";
+    var artist = "<div class='tailartist'>" + track.album.artists[0].name + "</div>";
     /*if (track.album.artist.uri != null)
     {
         artist = '<a href="'+track.album.artist.uri+'">'+track.album.artist.name+'</a>';
@@ -355,7 +348,6 @@ function handleDrop(e) {
     this.style.background = '#aaa';
     $("#lead-drop-data").empty();
     var uri = e.dataTransfer.getData('Text').toSpotifyURI();
-    console.log(uri);
 
     var linkDrop = new models.fromURI(uri);
 
@@ -370,7 +362,6 @@ function handleDrop(e) {
     }
     else
     {
-        console.log(linkDrop);
         $("#lead-drop-data").html("Nice try duck, you can't drop that kind of link here! Try an album or playlist.");
     }
 
@@ -384,7 +375,6 @@ function drawPlaylistForUri(uri)
         setLoadedList(playListDrop);
         var list = getCommonList(playListDrop);
 
-        console.log(list);
         $('#playlistDiv').empty();
         document.getElementById('playlistDiv').appendChild(list.node);
 
