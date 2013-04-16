@@ -133,7 +133,6 @@ function buildGoosesongList()
 
 function stageAll()
 {
-    $("#prepareToShare").hide();
 
     loadedList.tracks.snapshot().done(function(snapshot)
         {
@@ -145,7 +144,7 @@ function stageAll()
 
     buildGoosesongList();
 
-    $("#goosesongControl").show('slow');
+    showGooselistControls();
 }
 
 function stageMany(trackUri)
@@ -156,7 +155,7 @@ function stageMany(trackUri)
 
     buildGoosesongList();
 
-    $("#goosesongControl").show('slow');
+    showGooselistControls();    
 }
 
 function stage(trackUri)
@@ -164,14 +163,25 @@ function stage(trackUri)
 	var t = models.Track.fromURI(trackUri).load('name', 'image', 'artists', 'album').done(function(track) {
                 track.album.load('name').done(function(album) {
                 
-                $("#playlistGooseSong").hide();
                 $("#prepareToShare").html($("#prepareToShare_tmpl").jqote(track));
-                $("#prepareToShare").show('slow');
+                showHonkControls();
                 });   
 			});
 
     $(".artistLink").attr("href", t.uri);
+    showHonkControls();
+}
 
+function showGooselistControls()
+{
+    $("#prepareToShare").hide();
+    $("#goosesongControl").show('slow');
+}
+
+function showHonkControls()
+{
+    $("#goosesongControl").hide();
+    $("#prepareToShare").show('slow');
 }
 
 function federate(trackUri)
