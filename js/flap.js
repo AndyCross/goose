@@ -11,6 +11,7 @@ var searcher = null;
 var goosesongListing = null;
 var tempPlaylistSearch = null;
 var loadedList = null;
+var tailTrack = null;
 
 require([
         '$api/models',
@@ -292,6 +293,7 @@ function setStateSending(sending, singing)
 function showTail(track)
 {
     console.log(track);
+    tailTrack = track;
 
     $('#taildetails').empty(); 
     $("#starredness").empty();
@@ -300,9 +302,9 @@ function showTail(track)
     var cover = $(document.createElement('div')).attr('id', 'player-image');
 
     try {
-        if (track instanceof models.Track)
+        if (tailTrack instanceof models.Track)
         {
-            var img = imageView.forTrack(track, { width: 100, height:100 });
+            var img = imageView.forTrack(tailTrack, { width: 100, height:100 });
 
             //var img = new ui.SPImage(track.data.album.cover ? track.data.album.cover : "sp://import/img/placeholders/300-album.png");
             //cover.append($(document.createElement('a')).attr('href', track.data.album.uri));
@@ -319,15 +321,15 @@ function showTail(track)
         console.log(err);
     }
     
-    var song = '<div class="tailtrack"><a href="'+track.uri+'">'+track.name+'</a></div>';
+    var song = '<div class="tailtrack"><a href="'+tailTrack.uri+'">'+tailTrack.name+'</a></div>';
 
-    models.fromURI(track.album.uri).load('name').done(function(albumDetails) 
+    models.fromURI(tailTrack.album.uri).load('name').done(function(albumDetails) 
     {
-        var album = '<div class="tailalbum"><a href="'+track.album.uri+'">'+albumDetails.name+'</a></div>';
+        var album = '<div class="tailalbum"><a href="'+tailTrack.album.uri+'">'+albumDetails.name+'</a></div>';
 
         artist = "unknown artist";
-        if (track.artists) {
-         artist = "<div class='tailartist'>" + track.artists[0].name + "</div>";
+        if (tailTrack.artists) {
+         artist = "<div class='tailartist'>" + tailTrack.artists[0].name + "</div>";
         }
         /*if (track.album.artist.uri != null)
         {
@@ -340,7 +342,7 @@ function showTail(track)
         $("#nowPlaying").html("<div>" + artist + song + album + extra + "</div>");
 
 
-        doTailStar(track.uri, track.starred);
+        doTailStar(tailTrack.uri, tailTrack.starred);
     });
 }
 
