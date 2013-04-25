@@ -82,6 +82,25 @@ function search()
                     document.getElementById('playlistDiv').appendChild(list.node);
 
                     list.init();
+					
+                    setTimeout(function() {	
+						var headerTable = $('#playlistDiv .sp-list-header-table');
+					
+    					var playlistTable = $('#playlistDiv .sp-list-table');
+    					var cg = table.find('colgroup');
+    					cg.append('<col style="width: 80px">');
+    					cg.append('<col style="width: 80px">');											
+    					playlistTable.find('tr').each(function() {						
+							var itemUri = $(this).data('uri');
+							var formattedUri = '"' + itemUri + '"';
+							var honkButton = "<button onclick='stage(" + formattedUri + ");return true;'><span class='goose-dark'></span>honk</button>"						
+    						$(this).append(honkButton);
+
+							//var honkListButton = "<button onclick='stageMany('" + itemUri + "');return false;'><span class='goose-blue'></span>+honklist</button>"						
+    						//$(this).append('<td class="sp-list-cell">' + honkListButton + '</td>');
+							});
+    				}, 1000 );
+					
                 });
             });
         });
@@ -252,16 +271,24 @@ function setCommonPlayTracker()
 
 function getCommonList(playlist)
 {
-    var list = listView.forPlaylist(playlist, { header: 'no', getItem : function (item, index) {
+	var f = document.createElement("tbody")	
+	var h = [];
+//	var tmp = listView.availableOptions.getItem;
+	var list = listView.forPlaylist(playlist, { visualOffset:  1, fetch: 'scroll' });
+/*    var list = listView.forPlaylist(playlist, { getItem : function (item, index) {
 
                 var formattedDuration = formatMillisecondsToMinutes(item.duration);
                 item.formattedDuration = formattedDuration;
 
                 var templated = $("#playlistRow_tmpl").jqote({ 'item': item, 'index': index });
                 return $(templated)[0];
+				h.track = item;
+				var blah = this.list.model.items[index];
+				var temp = this.list.view.getItem(item,index,f, blah, h);
+				return temp;
             }
         }
-    );
+    );*/
 
     return list;
 
@@ -403,8 +430,15 @@ function drawPlaylistForUri(uri)
 
         $('#playlistDiv').empty();
         document.getElementById('playlistDiv').appendChild(list.node);
-
+		
         list.init();
+
+		var table = $('#playlistDiv.sp-list-header-table"');
+		var cg = table.find('colgroup');
+		cg.append('<col style="width: 30px">');
+		table.find('tr').each(function() {
+			$(this).append('<td>boo</td>');
+		});
         
     });
 }
