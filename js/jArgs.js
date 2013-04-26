@@ -84,7 +84,8 @@ function handlePlayerChange()
 		positionState = "at custom postion (ms) " + player.position; 
 	}
 
-	if (player.position == 0 && !player.playing && player.track.uri === goosesongListing.currentSong()) 
+	console.log(player);
+	if (player.position == 0 && !player.playing) 
 	{
 		state = "stopped";
 		positionState = "by completing";
