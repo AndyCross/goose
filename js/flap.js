@@ -277,11 +277,10 @@ function setCommonPlayTracker()
 
 function getCommonList(playlist)
 {
-	var f = document.createElement("tbody")	
-	var h = [];
 	var list = listView.forPlaylist(playlist, {fetch:'once'});
-	list.addEventListener("first-render", goosifyTable() );
-
+	list.addEventListener("first-render", function() {
+		goosifyTable() 
+	});
     return list;
 }
 
