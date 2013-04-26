@@ -22,6 +22,12 @@
 {
 	overflow: visible;
 }
+
+.sp-list-cell button
+{
+	margin:0px;
+}
+
 span.goose-blue
 {
 	background-image: url('/img/goose18x18-blue.png');

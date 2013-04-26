@@ -80,11 +80,36 @@ function search()
                     var list = getCommonList(playlist);
                     $('#playlistDiv').empty();
                     document.getElementById('playlistDiv').appendChild(list.node);
-
-                    list.init();
+									
+                    list.init();														
                 });
             });
         });
+}
+
+function goosifyTable() {
+	var headerTable = $('#playlistDiv .sp-list-header-table');
+	var cg = headerTable.find('colgroup');
+	cg.append('<col style="width: 80px">');
+	cg.append('<col style="width: 80px">');		
+	headerTable.find('tr .sp-list-header-row').each(function() {
+		$(this).append('<td>&nbsp;</td>');
+		$(this).append('<td>&nbsp;</td>');
+	});
+
+	var playlistTable = $('#playlistDiv .sp-list-table');
+	cg = playlistTable.find('colgroup');
+	cg.append('<col style="width: 80px">');
+	cg.append('<col style="width: 80px">');											
+	playlistTable.find('tr').each(function() {						
+		var itemUri = $(this).data('uri');
+		var formattedUri = '"' + itemUri + '"';
+		var honkButton = "<button onclick='stage(" + formattedUri + ");return true;'><span class='goose-dark'></span>honk</button>"						
+		$(this).append('<td class="sp-list-cell">' + honkButton + '</td>');
+
+		var honkListButton = "<button onclick='stageMany(" + formattedUri + ");return false;'><span class='goose-blue'></span>+honklist</button>"						
+		$(this).append('<td class="sp-list-cell">' + honkListButton + '</td>');
+	});
 }
 
 function buildGoosesongList()
@@ -252,19 +277,11 @@ function setCommonPlayTracker()
 
 function getCommonList(playlist)
 {
-    var list = listView.forPlaylist(playlist, { header: 'no', getItem : function (item, index) {
-
-                var formattedDuration = formatMillisecondsToMinutes(item.duration);
-                item.formattedDuration = formattedDuration;
-
-                var templated = $("#playlistRow_tmpl").jqote({ 'item': item, 'index': index });
-                return $(templated)[0];
-            }
-        }
-    );
-
+	var list = listView.forPlaylist(playlist, {fetch:'once'});
+	list.addEventListener("first-render", function() {
+		goosifyTable() 
+	});
     return list;
-
 }
 
 function formatMillisecondsToMinutes(milliseconds)
@@ -403,9 +420,8 @@ function drawPlaylistForUri(uri)
 
         $('#playlistDiv').empty();
         document.getElementById('playlistDiv').appendChild(list.node);
-
-        list.init();
-        
+		
+        list.init();        
     });
 }
 
