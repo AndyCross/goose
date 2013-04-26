@@ -80,30 +80,36 @@ function search()
                     var list = getCommonList(playlist);
                     $('#playlistDiv').empty();
                     document.getElementById('playlistDiv').appendChild(list.node);
-
-                    list.init();
-					
-                    setTimeout(function() {	
-						var headerTable = $('#playlistDiv .sp-list-header-table');
-					
-    					var playlistTable = $('#playlistDiv .sp-list-table');
-    					var cg = table.find('colgroup');
-    					cg.append('<col style="width: 80px">');
-    					cg.append('<col style="width: 80px">');											
-    					playlistTable.find('tr').each(function() {						
-							var itemUri = $(this).data('uri');
-							var formattedUri = '"' + itemUri + '"';
-							var honkButton = "<button onclick='stage(" + formattedUri + ");return true;'><span class='goose-dark'></span>honk</button>"						
-    						$(this).append(honkButton);
-
-							//var honkListButton = "<button onclick='stageMany('" + itemUri + "');return false;'><span class='goose-blue'></span>+honklist</button>"						
-    						//$(this).append('<td class="sp-list-cell">' + honkListButton + '</td>');
-							});
-    				}, 1000 );
-					
+									
+                    list.init();														
                 });
             });
         });
+}
+
+function goosifyTable() {
+	var headerTable = $('#playlistDiv .sp-list-header-table');
+	var cg = headerTable.find('colgroup');
+	cg.append('<col style="width: 80px">');
+	cg.append('<col style="width: 80px">');		
+	headerTable.find('tr .sp-list-header-row').each(function() {
+		$(this).append('<td>&nbsp;</td>');
+		$(this).append('<td>&nbsp;</td>');
+	});
+
+	var playlistTable = $('#playlistDiv .sp-list-table');
+	cg = playlistTable.find('colgroup');
+	cg.append('<col style="width: 80px">');
+	cg.append('<col style="width: 80px">');											
+	playlistTable.find('tr').each(function() {						
+		var itemUri = $(this).data('uri');
+		var formattedUri = '"' + itemUri + '"';
+		var honkButton = "<button onclick='stage(" + formattedUri + ");return true;'><span class='goose-dark'></span>honk</button>"						
+		$(this).append('<td class="sp-list-cell">' + honkButton + '</td>');
+
+		var honkListButton = "<button onclick='stageMany(" + formattedUri + ");return false;'><span class='goose-blue'></span>+honklist</button>"						
+		$(this).append('<td class="sp-list-cell">' + honkListButton + '</td>');
+	});
 }
 
 function buildGoosesongList()
@@ -273,25 +279,10 @@ function getCommonList(playlist)
 {
 	var f = document.createElement("tbody")	
 	var h = [];
-//	var tmp = listView.availableOptions.getItem;
-	var list = listView.forPlaylist(playlist, { visualOffset:  1, fetch: 'scroll' });
-/*    var list = listView.forPlaylist(playlist, { getItem : function (item, index) {
-
-                var formattedDuration = formatMillisecondsToMinutes(item.duration);
-                item.formattedDuration = formattedDuration;
-
-                var templated = $("#playlistRow_tmpl").jqote({ 'item': item, 'index': index });
-                return $(templated)[0];
-				h.track = item;
-				var blah = this.list.model.items[index];
-				var temp = this.list.view.getItem(item,index,f, blah, h);
-				return temp;
-            }
-        }
-    );*/
+	var list = listView.forPlaylist(playlist, {fetch:'once'});
+	list.addEventListener("first-render", goosifyTable() );
 
     return list;
-
 }
 
 function formatMillisecondsToMinutes(milliseconds)
@@ -431,15 +422,7 @@ function drawPlaylistForUri(uri)
         $('#playlistDiv').empty();
         document.getElementById('playlistDiv').appendChild(list.node);
 		
-        list.init();
-
-		var table = $('#playlistDiv.sp-list-header-table"');
-		var cg = table.find('colgroup');
-		cg.append('<col style="width: 30px">');
-		table.find('tr').each(function() {
-			$(this).append('<td>boo</td>');
-		});
-        
+        list.init();        
     });
 }
 
