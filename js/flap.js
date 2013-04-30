@@ -89,27 +89,35 @@ function search()
 
 function goosifyTable() {
 	var headerTable = $('#playlistDiv .sp-list-header-table');
-	var cg = headerTable.find('colgroup');
-	cg.append('<col style="width: 80px">');
-	cg.append('<col style="width: 80px">');		
-	headerTable.find('tr .sp-list-header-row').each(function() {
-		$(this).append('<td>&nbsp;</td>');
-		$(this).append('<td>&nbsp;</td>');
-	});
-
 	var playlistTable = $('#playlistDiv .sp-list-table');
-	cg = playlistTable.find('colgroup');
-	cg.append('<col style="width: 80px">');
-	cg.append('<col style="width: 80px">');											
-	playlistTable.find('tr').each(function() {						
-		var itemUri = $(this).data('uri');
-		var formattedUri = '"' + itemUri + '"';
-		var honkButton = "<button onclick='stage(" + formattedUri + ");return true;'><span class='goose-dark'></span>honk</button>"						
-		$(this).append('<td class="sp-list-cell">' + honkButton + '</td>');
-
-		var honkListButton = "<button onclick='stageMany(" + formattedUri + ");return false;'><span class='goose-blue'></span>+honklist</button>"						
-		$(this).append('<td class="sp-list-cell">' + honkListButton + '</td>');
-	});
+    var needToGoosify = playlistTable.find('tr').length > 1 || ( playlistTable.find('tr').length == 1 && playlistTable.find('tr').attrib('height') > 0 );
+    if ( needToGoosify ) {
+    	var cg = headerTable.find('colgroup');
+		if ( cg.children('col').length < 7 ) {
+			cg.append('<col style="width: 80px">');
+			cg.append('<col style="width: 80px">');		
+			headerTable.find('tr .sp-list-header-row').each(function() {
+				$(this).append('<td>&nbsp;</td>');
+				$(this).append('<td>&nbsp;</td>');
+			});
+    
+			cg = playlistTable.find('colgroup');
+			cg.append('<col style="width: 80px">');
+			cg.append('<col style="width: 80px">');											
+		}
+		
+    	playlistTable.find('tr').each(function() {			
+    		if ( $(this).children('.honk').length === 0 ) {
+    			var itemUri = $(this).data('uri');
+    			var formattedUri = '"' + itemUri + '"';
+    			var honkButton = "<button onclick='stage(" + formattedUri + ");return true;'><span class='goose-dark'></span>honk</button>"						
+    			$(this).append('<td class="sp-list-cell honk">' + honkButton + '</td>');
+    
+    			var honkListButton = "<button onclick='stageMany(" + formattedUri + ");return false;'><span class='goose-blue'></span>+honklist</button>"						
+    			$(this).append('<td class="sp-list-cell honk">' + honkListButton + '</td>');
+    		}
+    	});
+    }
 }
 
 function buildGoosesongList()
