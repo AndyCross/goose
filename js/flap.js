@@ -80,8 +80,10 @@ function search()
                     var list = getCommonList(playlist);
                     $('#playlistDiv').empty();
                     document.getElementById('playlistDiv').appendChild(list.node);
-									
-                    list.init();														
+
+					window.setTimeout(function() {
+						list.init();
+					},1000);						
                 });
             });
         });
