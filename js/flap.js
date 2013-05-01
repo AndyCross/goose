@@ -12,6 +12,7 @@ var goosesongListing = null;
 var tempPlaylistSearch = null;
 var loadedList = null;
 var tailTrack = null;
+var attachedPlayerChangeListener = false;
 
 require([
         '$api/models',
@@ -309,10 +310,20 @@ function setStateSending(sending, singing)
         $("#sendingInfo").show();
 
         //when events happen in the player, subscribe and respond to events
-        player.addEventListener('change', handlePlayerChange);
+        if (!attachedPlayerChangeListener)
+        {
+            player.addEventListener('change', handlePlayerChange);
+            attachedPlayerChangeListener = true;
+        }
     }
     else {
         $("#sendingInfo").hide();
+
+        if (attachedPlayerChangeListener)
+        {            
+            player.removeEventListener('change', handlePlayerChange);
+            attachedPlayerChangeListener = false;
+        }
     }
 
 }
