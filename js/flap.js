@@ -273,15 +273,15 @@ function setCommonPlayTracker()
 
         player.load('position').done(function(loadedPlayer){
 
-            var positionReport = player.position;
+            var positionReport = loadedPlayer.position;
             if (positionReport == null) {
                 console.log("loading");
             }
             else
             {
                 //todo: send the track also so that the tailfeece can join mid song
-                console.log("sending lead goose position as " + player.position);
-                gooseHub.server.syncTrack(player.position);
+                console.log("sending lead goose position as " + loadedPlayer.position);
+                gooseHub.server.syncTrack(loadedPlayer.position);
             }
         });
 
