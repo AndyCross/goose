@@ -272,7 +272,7 @@ function setCommonPlayTracker()
         }
 
         player.load('position').done(function(loadedPlayer){
-
+            console.log(loadedPlayer);
             var positionReport = loadedPlayer.position;
             if (positionReport == null) {
                 console.log("loading");
