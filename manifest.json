@@ -36,6 +36,10 @@
 		{ "arguments" : "tailgoose",
 			"title": { "en" : "Tail"
 			}
+		},
+		{ "arguments" : "playgoose",
+			"title": { "en" : "ASOS"
+			}
 		}
 	],
 	"Dependencies": {

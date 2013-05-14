@@ -30,11 +30,9 @@ function handleArgs() {
 		// If there are multiple arguments, handle them accordingly
 		if(args[1]) {		
 			switch(args[0]) {
-				case "search":
-					searchInput(args);
-					break;
-				case "social":
-					socialInput(args[1]);
+				case "playgoose":
+					$("#groupIdentifier").val(args[1]);
+					doSetFlock();
 					break;
 			}
 		}
